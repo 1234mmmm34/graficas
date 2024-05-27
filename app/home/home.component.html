@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+</head>
+
+<body>
+    <div id="grid">
+
+
+
+        <div class="columna1">
+            <div id="cdiv1">
+                <div id="cdiv1c1">
+                    <div class="cuadro">
+                        <p>Proyección de ingresos para este mes (brutos)</p>
+                    </div>
+                    <div class="cuadro">
+                        <p>Proyección de egresos para este mes (brutos)</p>
+                    </div>
+                </div>
+                <div id="cdiv1c2">
+                    <div class="cuadro">
+                        <p>Ingresos totales al día de hoy</p>
+                    </div>
+                    <div class="cuadro">
+                        <p>Egresos totales al día de hoy</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="cuadro1" *ngFor="let res of graficas;">
+                <p>Monto total en deudas por cobrar</p>
+                <p id="cuentas_cobrar">${{(res.cuentas_cobrar).toFixed(2)  | number:'1.2-2'}} MXN</p>
+            </div>
+
+            <div id="cdiv2">
+                <canvasjs-chart [options]="chartOptions2" [styles]="{width: '90%', height:'500px'}"></canvasjs-chart>
+            </div>
+
+        </div>
+        <div class="columna">
+            <div id="div1">
+                <canvasjs-chart [options]="chartOptions" [styles]="{width: '90%', height:'320px'}"></canvasjs-chart>
+            </div>
+
+            <div id="div2">
+                <canvasjs-chart [options]="chartOptions1" [styles]="{width: '90%', height:'320px'}"></canvasjs-chart>
+            </div>
+
+
+        </div>
+    </div>
+
+</body>
+
+</html>
