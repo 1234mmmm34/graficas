@@ -9,12 +9,13 @@ import { DatePipe } from '@angular/common'
 import { Personas } from '../ingresos-extraordinarios/personas.model';
 import { PersonasService } from '../ingresos-extraordinarios/personas.service';
 import Swal from 'sweetalert2';
+
 @Component({
-  selector: 'app-deudas',
-  templateUrl: './deudas.component.html',
-  styleUrls: ['./deudas.component.css']
+  selector: 'app-ingresos',
+  templateUrl: './ingresos.component.html',
+  styleUrls: ['./ingresos.component.css']
 })
-export class DeudasComponent {
+export class IngresosComponent {
   tipo_formulario: string='';
   httpclient: any;
   UserGroup: FormGroup;
@@ -365,3 +366,6 @@ actualizar_deudaExtra(
 function toggleCollapsible(event: Event | undefined, Event: { new(type: string, eventInitDict?: EventInit | undefined): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }) {
   throw new Error('Function not implemented.');
 }
+
+
+ 

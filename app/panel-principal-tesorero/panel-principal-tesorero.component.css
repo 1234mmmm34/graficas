@@ -16,7 +16,9 @@ body{
 .configuracion{
   margin-top: 40px;
 /*  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.20); */
-background-color: rgb(181, 207, 174);
+
+background: linear-gradient(rgb(149, 150, 193, 1),rgb(152, 152, 190), rgb(160, 161, 197));
+
 font: 1em sans-serif;
 }
 
@@ -26,7 +28,7 @@ img{
 .mat-toolbar{
   /*  background-color: #768650;  */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.20);
-   background-color: #575d43; 
+  background-color: #c1bffc; 
    z-index:2;
   }
 
@@ -99,7 +101,8 @@ a h6{
 mat-sidenav{
 
   width: 18%;
-  background: linear-gradient(rgb(187, 209, 181),rgb(181, 207, 174), rgb(255, 255, 255));
+
+  background: linear-gradient(rgb(149, 150, 193, 1),rgb(152, 152, 190), rgb(160, 161, 197));
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.20);
 }
 
@@ -109,12 +112,12 @@ mat-sidenav{
 }
 
 #logo{
-  height: 70px;
+  height: 60px;
   width: 150px; 
 }
 
 mat-expansion-panel{
-  background-color: #c9ecb6; 
+  background: rgb(149, 150, 193, 1);
   border-style: none;
   box-shadow: none;
   margin-top: 10px;
@@ -122,10 +125,12 @@ mat-expansion-panel{
 }
 
 mat-expansion-panel-header{
-  background-color: rgb(181, 207, 174); 
+  
+  background: rgb(149, 150, 193, 1);
+  
   border-style: none;
   box-shadow: none;
-  box-shadow: #b2d4a1;
+
 
 }
  

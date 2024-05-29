@@ -63,6 +63,7 @@ import { NoEncontradoDirective } from './no-encontrado/no-encontrado.directive';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { IngresosComponent } from './ingresos/ingresos.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
     ConsultarDeudasComponent,
     DeudasComponent,
     TesoreroComponent,
-    NoEncontradoDirective
+    NoEncontradoDirective,
+    IngresosComponent
     
   ],
   imports: [
