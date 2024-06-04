@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit,  Renderer2, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Router } from '@angular/router';
 import {  deudas, deuda } from "../modelos/deudas"
@@ -9,6 +9,8 @@ import { DatePipe } from '@angular/common'
 import { Personas } from '../ingresos-extraordinarios/personas.model';
 import { PersonasService } from '../ingresos-extraordinarios/personas.service';
 import Swal from 'sweetalert2';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 @Component({
   selector: 'app-deudas',
   templateUrl: './deudas.component.html',
@@ -20,17 +22,23 @@ export class DeudasComponent {
   UserGroup: FormGroup;
   UserGroup2: FormGroup;
   deudas: deudas[] = [];
+  deudas1: deudas[] = [];
   deuda =new deuda();
   id_deudas: any;
   destinatario:string='';
   destinatario2:string='';
   especifico:boolean=false;
-
+  formulario: any;
   personas : Personas[]=[];
 
-  constructor(private http: HttpClient, private dataService: DataService, private fb: FormBuilder,private personaService:PersonasService){
 
+  indice: number = 0;
+  verdaderoRango: number = 6;
+  cont: number = 1;
 
+  constructor(private renderer: Renderer2 , private el: ElementRef, private http: HttpClient, private dataService: DataService, private fb: FormBuilder,private personaService:PersonasService){
+  
+    
     this.UserGroup = this.fb.group({
          fraccionamiento: ['', Validators.required],
          monto: ['', Validators.required],
@@ -39,7 +47,7 @@ export class DeudasComponent {
          dias_gracia: ['', Validators.required],
          periodicidad: ['', Validators.required],
          recargo: ['', Validators.required],
-         proximo_pagoOrdinario: ['', Validators.required],
+         proximo_pago: ['', Validators.required],
          destinatario: ['', Validators.required],
          
     
@@ -67,7 +75,65 @@ export class DeudasComponent {
       this.fetchDataDeudas(this.dataService.obtener_usuario(1));
       this.consultarPersonas(this.dataService.obtener_usuario(3));
       this.tipo_formulario=='ordinario';
+
+
     
+    }
+
+    pageChanged(event: any) {
+      // Determinar la acción del paginator
+      if (event.previousPageIndex < event.pageIndex) {
+        // Se avanzó a la siguiente página
+        this.paginador_adelante();
+      } else if (event.previousPageIndex > event.pageIndex) {
+        // Se retrocedió a la página anterior
+        this.paginador_atras();
+      }
+    }
+
+    paginador_atras() {
+
+      if (this.indice - this.verdaderoRango >= 0) {
+        
+        this.deudas1 = this.deudas.slice(this.indice - this.verdaderoRango, this.indice);
+        this.indice = this.indice - this.verdaderoRango;
+        this.cont--;
+      }
+    }
+  
+    paginador_adelante() {
+      if (this.deudas.length - (this.indice + this.verdaderoRango) > 0) {
+        this.indice = this.indice + this.verdaderoRango;
+        this.deudas1 = this.deudas.slice(this.indice, this.indice + this.verdaderoRango);
+        this.cont++;
+       // this.consultarNotificacion
+      } 
+      
+    }
+    
+    toggleCollapsible(event: Event): void {
+      const element = event.currentTarget as HTMLElement;
+      const content = element.nextElementSibling as HTMLElement; // Convertir a HTMLElement
+      this.renderer.addClass(element, 'active');
+      if (content.style.display === 'block') {
+        this.renderer.setStyle(content, 'display', 'none');
+        this.renderer.removeClass(element, 'active');
+      } else {
+        this.renderer.setStyle(content, 'display', 'block');
+      }
+    }
+
+
+    onChangeSelection(event: any) {
+
+      if(event.target.value == 'extraordinario'){
+        this.formulario = 'extraordinarias'
+        this.fetchDataDeudasExtra(this.dataService.obtener_usuario(1));
+      }
+      else{
+        this.formulario = 'ordinarias'
+        this.fetchDataDeudas(this.dataService.obtener_usuario(1));
+      }
     }
 
     consultarPersonas(idFraccionamiento: number): void {
@@ -94,12 +160,24 @@ export class DeudasComponent {
   
     }
 
+
+
     fetchDataDeudas(id_tesorero: any) {
       this.dataService.fetchDataDeudas(id_tesorero).subscribe((deudas: deudas[]) => {
-        //console.log(deudas);
+        console.log(deudas);
         this.deudas = deudas;
+        this.deudas1 = this.deudas.slice(this.indice, this.indice + this.verdaderoRango);
       });
-    } 
+    }
+
+    fetchDataDeudasExtra(id_tesorero: any) {
+      this.dataService.fetchDataDeudasExtra(id_tesorero).subscribe((deudas: deudas[]) => {
+        console.log(deudas);
+        this.deudas = deudas;
+        this.deudas1 = this.deudas.slice(this.indice, this.indice + this.verdaderoRango);
+      });
+    }
+
 
     edit(deudas: {
       id_deudas: any;
@@ -122,17 +200,29 @@ export class DeudasComponent {
     }
     
     fechaProximoPago:string='';
-agregar_deuda(deudas: {monto: number, nombre: string, descripcion: string, dias_gracia:number, periodicidad: number, recargo: number, id_tesorero: number, id_fraccionamiento:number,proximo_pago:string,destinatario:string}){
-  deudas.id_fraccionamiento= this.dataService.obtener_usuario(3);
-  deudas.id_tesorero = this.dataService.obtener_usuario(1);
-  deudas.proximo_pago=this.fechaProximoPago;
-  deudas.destinatario=this.destinatario;
-  console.log(deudas);
+agregar_deuda(deudas: {monto: any, nombre: any, descripcion: any, dias_gracia: number, periodicidad: number, recargo: any, id_tesorero: any, id_fraccionamiento: any,proximo_pago:any,destinatario:any}){
+
+  const params = {
+    monto: deudas.monto,
+    nombre: deudas.nombre,
+    descripcion: deudas.descripcion,
+    dias_gracia: deudas.dias_gracia,
+    periodicidad: deudas.periodicidad,
+    recargo: deudas.recargo,
+    id_tesorero: this.dataService.obtener_usuario(1),
+    id_fraccionamiento: this.dataService.obtener_usuario(3),
+    proximo_pago: deudas.proximo_pago,
+    proximo_pago1: "string",
+    destinatario: this.destinatario
+  }
+
+  console.log("DEUDAS", params);
+
  
   const headers = new HttpHeaders({'myHeader': 'procademy'});
   this.http.post(
    "https://localhost:44397/api/Deudas/Agregar_Deuda",
-    deudas, {headers: headers})
+    params, {headers: headers})
     .subscribe((res) => { 
       console.log(res);
       Swal.fire({
@@ -159,21 +249,18 @@ onChangeOption2(event:any){
 
   if(selectedValue=='personalizado'){
     this.especifico=true;
+   // this.onChangeUsuario({ target: { selectedIndex: 2 } });
   }else{
     this.especifico=false;
     this.destinatario=selectedValue;
     this.destinatario2=this.destinatario;
     console.log("Destinatarioooooooooooooooooo:"+this.destinatario);
     console.log("Destinatarioooooooooooooooooo2:"+this.destinatario2);
+
+    
   }
  
   
-}
-
-onChangeUsuario(event: any) {
-  const valorSeleccionado = event.target.value;
-  const destinatarioId = parseInt(valorSeleccionado.split(' - ')[0]);
-  this.destinatario2=destinatarioId.toString();
 }
 
 
@@ -230,21 +317,37 @@ delete(id_deudas: any){
 
   fechaCorte_extra:string='';
   agregar_deudaExtra(deudas: {monto: number, nombre: string, descripcion: string, dias_gracia:number, periodicidad: number, recargo: number, id_tesorero: number, id_fraccionamiento:number,proximo_pago:string,destinatario:string}){
-  console.log(this.fechaCorte_extra);
-  console.log(deudas);
+
   deudas.dias_gracia=0;
   deudas.periodicidad=0;
-  deudas.destinatario=this.destinatario2;
   deudas.recargo=0;
   deudas.proximo_pago=this.fechaCorte_extra;
   deudas.id_fraccionamiento= this.dataService.obtener_usuario(3);
   deudas.id_tesorero = this.dataService.obtener_usuario(1);
   console.log(deudas.id_tesorero);
   console.log(this.fechaCorte_extra);
+
+  const params = {
+    id_deudas: 0,
+    id_fraccionamiento: deudas.id_fraccionamiento,
+    id_tesorero: this.dataService.obtener_usuario(1),
+    monto: deudas.monto,
+    nombre: deudas.nombre,
+    descripcion: deudas.descripcion,
+    proximo_pago: deudas.proximo_pago,
+    proximo_pago1: "s",
+    destinatario: this.destinatario,
+    dias_gracia: 0,
+    periodicidad: 0,
+    recargo: 0
+  }
+
+  console.log("PARAMS", params)
+
   const headers = new HttpHeaders({'myHeader': 'procademy'});
   this.http.post(
    "https://localhost:44397/api/Deudas/Agregar_DeudaExtra",
-    deudas, {headers: headers})
+    params, {headers: headers})
     .subscribe((res) => { 
       Swal.fire({
         title: 'Deuda agregada correctamente',
@@ -261,13 +364,6 @@ delete(id_deudas: any){
 }
 
 
-
-fetchDataDeudasExtra(id_tesorero: any) {
-  this.dataService.fetchDataDeudasExtra(id_tesorero).subscribe((deudas: deudas[]) => {
-    console.log(deudas);
-    this.deudas = deudas;
-  });
-} 
 
 actualizar_deudaExtra(
   deudas: {monto: number, nombre: string, descripcion: string, proximo_pago: Date, id_deudas: number}
@@ -302,4 +398,7 @@ actualizar_deudaExtra(
 
 }
 
+}
+function toggleCollapsible(event: Event | undefined, Event: { new(type: string, eventInitDict?: EventInit | undefined): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }) {
+  throw new Error('Function not implemented.');
 }

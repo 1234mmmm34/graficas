@@ -13,11 +13,14 @@ import Swal from 'sweetalert2';
   styleUrls: ['./mis-deudas.component.css']
 })
 export class MisDeudasComponent {
-
+ 
   httpclient: any;
   deudores: deudores[] = [];
   deudor =new deudor();
   filtroDeudores:'' | undefined;
+  indice: number = 0;
+  verdaderoRango: number = 6;
+  cont: number = 1;
 
   Deudores_totales:Deudores[]=[];
   Deudores_totales2:Deudores[]=[];
@@ -35,16 +38,51 @@ export class MisDeudasComponent {
   //   });
   // }
 
+  
+  pageChanged(event: any) {
+    // Determinar la acción del paginator
+    if (event.previousPageIndex < event.pageIndex) {
+      // Se avanzó a la siguiente página
+      this.paginador_adelante();
+    } else if (event.previousPageIndex > event.pageIndex) {
+      // Se retrocedió a la página anterior
+      this.paginador_atras();
+    }
+  }
+
+  
+  paginador_atras() {
+
+    if (this.indice - this.verdaderoRango >= 0) {
+      
+      this.Deudores_totales2 = this.Deudores_totales.slice(this.indice - this.verdaderoRango, this.indice);
+      this.indice = this.indice - this.verdaderoRango;
+      this.cont--;
+    }
+  }
+
+  paginador_adelante() {
+    if (this.Deudores_totales.length - (this.indice + this.verdaderoRango) > 0) {
+      this.indice = this.indice + this.verdaderoRango;
+      this.Deudores_totales2 = this.Deudores_totales.slice(this.indice, this.indice + this.verdaderoRango);
+      this.cont++;
+     // this.consultarNotificacion
+    } 
+    
+  }
+ 
   ConsultarDeudores(){
-    this.personasService.consultarDeudoresUsuarios(this.dataService.obtener_usuario(4)).subscribe(
+    console.log("aaaaaaaa: " + this.dataService.obtener_usuario(4))
+    this.personasService.consultarDeudoresUsuarios(this.dataService.obtener_usuario(1)).subscribe(
       (deudasUsuario: Deudores[]) => {
        this.Deudores_totales = deudasUsuario
-        console.log('deudas de todos los  usuarios', this.Deudores_totales);
+       this.Deudores_totales2 = this.Deudores_totales.slice(this.indice, this.indice + this.verdaderoRango);
+        console.log('deudas', this.Deudores_totales);
         if(this.Deudores_totales.length!=0){
 
         }else{
           Swal.fire({
-            title: 'El usuario seleccionado no tiene deudas extraordinarias vencidas',
+            title: 'El usuario seleccionado no tiene deudas  vencidas',
             text: '',
             icon: 'warning',
             confirmButtonText: 'Aceptar'

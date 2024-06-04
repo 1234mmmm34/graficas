@@ -1,9 +1,31 @@
 body{
-  background-color: #f2f7f0;
+  background-color: #f2f3f4;
   margin: 0%;
   background-position: center center;
 
 }
+
+
+ 
+.titulo {
+  text-align: justify !important;
+  padding-top: 20px;
+  margin-left: 100px;
+  color: rgb(97, 94, 94) !important;
+
+}
+
+.sidenav{
+  width: 400px;
+  background-color: #e2e0e4;
+  height: 90%;
+  box-shadow: 0px 0px 10px 0px #a7a4a4 inset; /* Sombra */
+  padding-left: 30px;
+  display: flex;
+
+
+}
+
 
 .derecha{
  
@@ -20,32 +42,41 @@ body{
   
 }
 
-.contenedor{
-  padding-top: 20px;
+.contenedor {
+  flex: 1;
+  width: 50%;
+
+  height: 80%;
+  padding: 20px;
+  margin-top: 100px;
+  position: absolute;
+  top: 20px;
+  left: 25%;
+
+
+
 }
 
-.mat-toolbar{
-  /*  background-color: #768650;  */
-   background-color: #575d43; 
-  }
 
-  .titulo {
+
+.top{
+  
+
+
+  box-shadow: 0px 0px 10px 0px #a7a4a4; /* Sombra */
+  padding-bottom: 10px;
+  
+  z-index: -1;
+
+}
     
-    color: rgb(0, 0, 0);
-    margin-top: 30px;
-
-    margin-left: 8%;
-    margin-right: 32%;
-    text-align: left;
-
-  }
-   
   
   input, select{
     width: 300px;
     border: 1px solid transparent;
     background-color: transparent;
     border-bottom: 1px solid #989898;
+    margin-top: 10px;
   }
 
   p > #telefono, p > #fechaNacimiento{
@@ -144,12 +175,12 @@ body{
 
 .imagen{
 position: absolute;
-margin-left: 800px;
-margin-top: -300px;
+margin-left: 700px;
+margin-top: -350px;
 }
 
 .btn_imagen{
-padding: 10px;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -157,11 +188,13 @@ padding: 10px;
     text-transform: uppercase;
     background: #4c9c4e;
     color: #FFFFFF;
+    width: 200px;
 
     position: absolute;
-    margin-left: 840px;
+    
+    margin-left: 730px;
+    bottom: 320px;
 }
-
 
 
 

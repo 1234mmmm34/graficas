@@ -14,7 +14,7 @@ export class PersonasService {
   constructor(private http: HttpClient) { }
 
   consultarPersonasPorFraccionamiento(idFraccionamiento: number): Observable<Personas[]> {
-    const url = `${this.apiUrl}/Usuarios/Consultar_Personas_Por_Fraccionamiento?id_fraccionamiento=${idFraccionamiento}`;
+    const url = `${this.apiUrl}/Usuarios/Consultar_Personas_Por_Fraccionamientos?id_fraccionamiento=${idFraccionamiento}`;
     return this.http.get<Personas[]>(url);
   }
 

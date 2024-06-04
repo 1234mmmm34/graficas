@@ -17,36 +17,50 @@ export class PanelPrincipalAdminComponent {
 
   mobileQuery: MediaQueryList;
 
+  esPanelAdmin(): boolean {
+    return this.router.url === 'Home';
+  }
+
+
+
+
+
   //fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
  
    
   fillerNav=[  
-    {name:"Home", route:"Home", icon:"home"},
-    {name:"Acuerdos", route:"Acuerdos", icon:"assignment", children: [
-      {name: "Agregar", route: "Acuerdos", icon:"assignment_ind"}, 
-      {name: "Consultar", route: "ConsultarAcuerdos", icon:"class"}
-    ]},
-    {name:"Notificaciones", route:"Notificaciones", icon:"priority_high", children: [
-      {name: "Agregar", route: "Notificaciones", icon:"assignment_ind"},
-      {name: "Consultar", route: "ConsultarNotificaciones", icon:"class"}
-    ]},
+      {name:"Home", route:"Home", icon:"home"},
+   // {name:"Acuerdos", route:"Acuerdos", icon:"assignment", children: [
+   //   {name: "Agregar", route: "Acuerdos", icon:"assignment_ind"}, 
+      {name: "Acuerdos", route: "ConsultarAcuerdos", icon:"assignment"},
+ //   ]},
+ //   {name:"Notificaciones", route:"Notificaciones", icon:"priority_high", children: [
+  //    {name: "Agregar", route: "Notificaciones", icon:"assignment_ind"},
+      {name: "Notificaciones", route: "ConsultarNotificaciones", icon:"priority_high"},
+  //  ]},
+  /*
     {name:"Propiedades", route:"Propiedades", icon:"explore", 
     children: [
       {name:"Agregar", route:"Propiedades", icon:"assignment_ind", children: []},
    //   {name:"Personas", route:"Inquilinos", icon:"assignment_ind", children: []},
       {name:"Consultar", route:"ConsultarPropiedades", icon:"class"} 
     ]}, 
-    {name:'Usuarios',route:"Usuarios", icon:"supervised_user_circle", 
+    */
+    {name:'Usuarios',route:"AgregarUsuario", icon:"supervised_user_circle", 
     children: [
       {name:"Agregar", route:"Usuarios", icon:"person_add", 
       children: []}, 
-      {name:"Consultar", route:"AgregarUsuario", icon:"class"}
+      {name:"Consultar", route:"AgregarUsuario", icon:"class"},
+      {name:"Tesorero", route:"Tesorero", icon:"money", children: []}
     ]},
     {name:"Controlador",route:"Fraccionamientos", icon:"cast_connected"},
-    {name:"Configuracion",route:"Settings",icon:"settings"}
+    {name:"Configuracion",route:"Settings",icon:"settings"},
    //{name:'Salir',route:'Home', icon:"exit_to_app"}
 
    // <font-awesome-icon icon="right-from-bracket" />
+   {name:'',route:"", icon:"", children: [
+    {name:'',route:"", icon:""}
+  ]},
   ]
 
 
@@ -87,8 +101,9 @@ usuario: any;
   shouldRun = true;
 
   ngOnInit(): void {
-    this.usuario = this.data.obtener_usuario(2);
-    this.Cargar_Imagen(this.data.obtener_usuario(1));
+    this.usuario = this.data.obtener_usuario(8);
+    this.Cargar_Imagen(this.data.obtener_usuario(1)); 
+    this.esPanelAdmin();
   }
 
 
@@ -104,7 +119,7 @@ usuario: any;
         console.error('Error al obtener la imagen', error);
       }
     );
-  }
+  } 
 
   createImageFromBlob(image: Blob): void {
     const reader = new FileReader();
@@ -116,7 +131,7 @@ usuario: any;
       reader.readAsDataURL(image);
     }
   }
-
+ 
   //Configuracion del submenu para que no se abra dos veces
   submenuAbierto: number = -1;
   abrirSubmenu(index: number): void {

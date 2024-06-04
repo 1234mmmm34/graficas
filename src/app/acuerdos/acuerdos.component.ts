@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { DataService } from '../data.service';
 
-@Component({
+@Component({ 
   selector: 'app-acuerdos', 
   templateUrl: './acuerdos.component.html',
   styleUrls: ['./acuerdos.component.css']
@@ -34,7 +34,7 @@ export class AcuerdosComponent {
     this.consultarAcuerdos();
   }
 
-  
+
     agregarAcuerdo(formulario: any) {
       const { idFraccionamiento, asunto, detalles } = formulario;
     this.fecha = this.obtenerFechaActualFormateada();

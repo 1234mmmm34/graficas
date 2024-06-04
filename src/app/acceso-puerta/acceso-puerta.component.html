@@ -1,3 +1,10 @@
+<div>
+    <h2 class="titulo1">Control de Acceso</h2>
+    <p id="descripcion">Con un código Qr, permite entradas a tus invitados a tu comunidad</p>
+</div>
+
+<hr>
+
 <div class="container">
     <h2 class="titulo">Control de Acceso</h2>
 
@@ -6,9 +13,11 @@
     </div>
 
     <div class="qr-container">
-        <img [src]="urlCodigoQR" alt="Presiona el Botón de Arriba para generar el código" #codigoQR >
+        <img [src]="urlCodigoQR" alt="Presiona el botón de arriba para generar el código" #codigoQR >
 
         <p class="advertencia">Comparte solamente con la persona que necesita acceso. No compartas este código con desconocidos.</p>
+
+        <p class="advertencia">Recuerda que este código de acceso es de uso único</p>
 
         <button class="download-button" (click)="descargarCodigoQR()">Descargar</button>
     </div>

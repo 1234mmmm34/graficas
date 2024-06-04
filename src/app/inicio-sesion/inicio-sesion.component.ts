@@ -26,7 +26,7 @@ export class InicioSesionComponent {
   title = 'Proyecto-Web2';
   sesion  = new sesion();
   sesions: sesions[] = [];
-
+  num: number = 1;
   Tipo_usuario: string = '';
   private _pokeService: any;
   response: any;
@@ -52,20 +52,6 @@ export class InicioSesionComponent {
       
       
   }
-/*
-  
-  Definir_Admin() {
-    this.Tipo_usuario = 'Admin';
-  }
-
-  Definir_User() {
-    this.Tipo_usuario = 'User';
-  }
-
-  Definir_Tesorero() {
-    this.Tipo_usuario = 'Tesorero';
-  }
-*/
 
   mobileQuery: MediaQueryList;
 
@@ -124,9 +110,9 @@ export class InicioSesionComponent {
       })
       return; 
     }
-
+ 
     this.data.iniciar_sesion1(sesion).subscribe((sesions) => {
-      if (sesions.length > 0) {
+      if (sesions.length > 0) { 
         console.log(sesions[0].tipo_usuario);
         console.log(sesions[0]);
   
@@ -137,7 +123,7 @@ export class InicioSesionComponent {
           this.router.navigate(['PanelAdmin']);
         } else if (this.Tipo_usuario === "tesorero") {
           this.router.navigate(['PanelTesorero']);
-        } else if (this.Tipo_usuario === "propietario" || this.Tipo_usuario === "arrendatario") {
+        } else if (this.Tipo_usuario === "propietario" || this.Tipo_usuario === "arrendatario" || this.Tipo_usuario === "usuario") {
           this.router.navigate(['PanelUser']);
         } else {
           console.log("Tipo de usuario desconocido");
@@ -153,6 +139,29 @@ export class InicioSesionComponent {
         });
       }
     });
+
+
+    if(this.Tipo_usuario === "tesorero"){
+      this.num = 3;
+    }
+
+    
+    this.data.consultarDeudasPorCobrar(this.num).subscribe((graficas) => {
+      if (graficas.length > 0) { 
+        console.log(graficas[0].novariables);
+        console.log(graficas[0]);
+
+        localStorage.setItem("graficas", JSON.stringify(graficas[0]));
+      } else {
+        Swal.fire({
+          title: 'Error en inicio de sesion',
+          text: 'Correo o contraseña incorrectos',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
+  
   }
   
 agregar_administrador(sesion: {

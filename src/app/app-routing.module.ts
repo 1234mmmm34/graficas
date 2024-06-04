@@ -39,7 +39,11 @@ import { InvitacionComponent } from './invitacion/invitacion.component';
 import { InicioSesionComponent } from './inicio-sesion/inicio-sesion.component';
 import { RecuperacionContraseniaComponent } from './recuperacion-contrasenia/recuperacion-contrasenia.component';
 import { DeudasComponent } from './deudas/deudas.component';
+import { TesoreroComponent } from './tesorero/tesorero.component'
+import {ConsultarUsuariosTesoreroComponent } from './consultar-usuarios-tesorero/consultar-usuarios-tesorero.component'
+import {IngresosComponent } from './ingresos/ingresos.component'
  
+
 const routes: Routes = [
  // {path:'Home', component:HomeComponent},
   {path:'Acuerdos', component:AcuerdosComponent},
@@ -65,6 +69,8 @@ const routes: Routes = [
 
   {path:"AgregarDeudas", component:DeudasComponent},
   {path:'ConsultarDeudas', component:ConsultarDeudasComponent},
+  {path:'ConsultarUsuariosTesorero', component:ConsultarUsuariosTesoreroComponent},
+
 
   //Inicio panel admin
   {path:'PanelAdmin', component:PanelPrincipalAdminComponent, 
@@ -79,6 +85,7 @@ const routes: Routes = [
     {path:'ConsultarPropiedades', component:ConsultarPropiedadesComponent},
     {path: 'Inquilinos', component:InquilinosComponent},
     {path:'AgregarUsuario', component:AgregarUsuarioComponent},
+    {path:"Tesorero", component:TesoreroComponent},
     {path:'Propiedades', component:PropiedadesComponent, 
     children: [
       {path:'Propiedades', component:PropiedadesComponent},
@@ -90,21 +97,32 @@ const routes: Routes = [
       {path:'ConsultarUsuario', component:EmailComponent},
       {path:'AgregarUsuario', component:AgregarUsuarioComponent}
     ]},
-    {path:"Settings", component:CuentaComponent}
+    {path:"Settings", component:CuentaComponent},
+
+    {path:'', component:HomeComponent}
   ]},//Final panel admin
 
 //inicio panel tesorero
 {path:'PanelTesorero', component:PanelPrincipalTesoreroComponent,
 children:[
+  {path:'Home', component:HomeComponent},
   {path:'Deudas', component:DeudasComponent},
 {path:'DeudasExtraordinarias', component:DeudasExtraordinariasComponent},
 {path:'ConsultarDeudas',component:ConsultarDeudasComponent},
 {path:'Deudores', component:DeudoresComponent},
 {path:'Egresos', component:EgresosComponent},
+{path:'Ingresos', component:IngresosComponent},
 {path:'IngresosExtraordinarios', component:IngresosExtraordinariosComponent},
 {path:'IngresosOrdinarios', component:IngresosOrdinariosComponent},
 {path:'Proveedores', component:ProveedoresComponent},
+{path:'Usuarios', component:UsuariosComponent},
+{path:'Usuarios', component:UsuariosComponent, children: [
+  {path:'ConsultarUsuariosTesorero', component:ConsultarUsuariosTesoreroComponent},
+]},
+{path:'ConsultarUsuariosTesorero', component:ConsultarUsuariosTesoreroComponent},
 {path:"Settings", component:CuentaComponent},
+
+{path:'', component:HomeComponent}
 ]},//Final panel tesorero
 
   //Inicio panel de usuario
@@ -130,3 +148,4 @@ children:[
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+ 

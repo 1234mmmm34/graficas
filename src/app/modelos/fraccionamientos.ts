@@ -1,5 +1,6 @@
 
 export interface controladores {
+    nombre: any;
     id_controlador: any;
     id_fraccionamiento: any;
     user: any;
@@ -10,6 +11,7 @@ export interface controladores {
     };
     
     export class controlador {
+        nombre: any;
         id_controlador: any;
         id_fraccionamiento: any;
         user: any;

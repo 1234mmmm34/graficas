@@ -123,7 +123,8 @@ export class AppComponent {
    this.Tipo_usuario = sesions[0].tipo_usuario;
 
    localStorage.setItem("data", JSON.stringify(sesions[0]));
-
+   
+   
    
 
     //localStorage.setItem("data", JSON.stringify(data));

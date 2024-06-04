@@ -25,7 +25,7 @@ export class ImageService {
   }
 
 
-  obtenerImagenPorId(id_Pago: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/Consultar_Comprobante?id_Pago=${id_Pago}`, { responseType: 'arraybuffer' });
+  obtenerImagenPorId(id_Persona: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/Consultar_Imagen?id_Persona=${id_Persona}`, { responseType: 'arraybuffer' });
   }
 }

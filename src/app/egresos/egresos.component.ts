@@ -15,14 +15,18 @@ export class EgresosComponent {
   id_fraccionamiento: number=0;
   proveedores: Proveedor[]=[];
   egresos: Egresos[]=[];
+  egresos1: Egresos[]=[];
   idEgreso: number=0;
+  indice: number = 0;
+  verdaderoRango: number = 6;
+  cont: number = 1;
   //
   egresoModel: Egresos = {
     id_egreso: 0, 
     concepto: '',
     descripcion: '',
     proveedor: '',
-    monto: 0,
+    monto: '',
     fecha: ''
   };
   //
@@ -35,11 +39,45 @@ export class EgresosComponent {
 
   }
 
+  
+  pageChanged(event: any) {
+    // Determinar la acción del paginator
+    if (event.previousPageIndex < event.pageIndex) {
+      // Se avanzó a la siguiente página
+      this.paginador_adelante();
+    } else if (event.previousPageIndex > event.pageIndex) {
+      // Se retrocedió a la página anterior
+      this.paginador_atras(); 
+    }
+  }
+
+
+  paginador_atras() {
+
+    if (this.indice - this.verdaderoRango >= 0) {
+      this.egresos1 = this.egresos.slice(this.indice - this.verdaderoRango, this.indice);
+      this.indice = this.indice - this.verdaderoRango;
+      this.cont--;
+    }
+  }
+
+  paginador_adelante() {
+    if (this.egresos.length - (this.indice + this.verdaderoRango) > 0) {
+      this.indice = this.indice + this.verdaderoRango;
+      this.egresos1 = this.egresos.slice(this.indice, this.indice + this.verdaderoRango);
+      this.cont++;
+     // this.consultarNotificacion
+    }
+
+  }
+
+
   consultarEgresos(idFraccionamiento: number) {
     this.egresoService.consultarEgresos(idFraccionamiento).subscribe(
       (data: Egresos[]) => {
         console.log('Egresos consultados:', data);
         this.egresos=data;
+        this.egresos1 = this.egresos.slice(this.indice, this.indice + this.verdaderoRango);
       },
       (error) => {
         console.error('Error al consultar egresos:', error);
@@ -57,7 +95,7 @@ export class EgresosComponent {
   agregarEgreso() {
     const { concepto, descripcion, proveedor, monto,fecha } = this.egresoModel;
   
-    this.egresoService.agregarEgreso(this.id_fraccionamiento, concepto, descripcion, proveedor, monto, fecha).subscribe(
+    this.egresoService.agregarEgreso(this.dataService.obtener_usuario(3), concepto, descripcion, proveedor, monto, fecha).subscribe(
       (result: boolean) => {
         if (result) {
           console.log('Egreso agregado correctamente');

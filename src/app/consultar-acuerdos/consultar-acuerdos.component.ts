@@ -1,14 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AcuerdosService } from '../acuerdos/acuerdos.service';
 import { Acuerdos } from '../acuerdos/acuerdos.model';
 import { DataService } from '../data.service';
-
+import { NoEncontradoDirective } from '../no-encontrado/no-encontrado.directive';
+import Swal from 'sweetalert2'
+import { NgForm } from '@angular/forms';
+ 
 @Component({
   selector: 'app-consultar-acuerdos',
   templateUrl: './consultar-acuerdos.component.html',
-  styleUrls: ['./consultar-acuerdos.component.css']
+  styleUrls: ['./consultar-acuerdos.component.css'],
+ // directives: [NoEncontradoDirective] // Asegúrate de incluir la directiva en la lista de directivas
+
 })
-export class ConsultarAcuerdosComponent {
+export class ConsultarAcuerdosComponent { 
+@ViewChild('formCrear', { static: false }) formCrear!: NgForm;
 //OJOOOOOOOOOOOOOOO
 id_fraccionamiento:number=this.dataService.obtener_usuario(1);
 filtroAcuerdos:'' | undefined;
@@ -17,45 +23,133 @@ filtroFecha:'' | undefined;
 fecha: string=""; 
 //fecha: any;
 acuerdos: Acuerdos[] = [];
+indice: number = 0; 
+verdaderoRango: number = 6;
+cont: number = 1;
+acuerdos1: Acuerdos[] = [];
+
 constructor(private acuerdosService: AcuerdosService,private dataService:DataService) {}
 
 ngOnInit(): void {
+  //this.consultarAcuerdos();
   this.consultarAcuerdos();
+  
+}
+ 
+
+
+
+/*
+paginador_atras() {
+
+  if (this.indice - this.verdaderoRango >= 0) {
+    this.notificaciones1 = this.notificaciones.slice(this.indice - this.verdaderoRango, this.indice);
+    this.indice = this.indice - this.verdaderoRango;
+    this.cont--;
+  }
+}
+
+paginador_adelante() {
+  if (this.notificaciones.length - (this.indice + this.verdaderoRango) > 0) {
+    this.indice = this.indice + this.verdaderoRango;
+    this.notificaciones1 = this.notificaciones.slice(this.indice, this.indice + this.verdaderoRango);
+    this.cont++;
+   // this.consultarNotificacion
+  } 
+  
 }
 
 
-  agregarAcuerdo(formulario: any) {
-    const { idFraccionamiento, asunto, detalles } = formulario;
-  this.fecha = this.obtenerFechaActualFormateada();
-  //this.fecha = new Date();
 
-    //OJOOOOOOOOOOOOOOO
-    
-    //OJOOOOOOOOOOOOOOOOOOO
-    this.acuerdosService.agregarAcuerdo(this.id_fraccionamiento, asunto, detalles,this.fecha)
-      .subscribe(
-        (respuesta: string) => {
-          console.log('Acuerdo agregado:', respuesta);
-          this.consultarAcuerdos();
-        },
-        (error) => {
-          console.error('Error al agregar acuerdo:', error);
-        }
-      );
+*/
+ 
+
+
+agregarAcuerdo(formulario: any) {
+  //const { idFraccionamiento, asunto, detalles } = formulario;
+  this.fecha = this.obtenerFechaActualFormateada();
+  const asunto = formulario.asunto;
+  const detalles = formulario.detalles;
+
+  console.log("veamos: ",asunto, detalles,this.fecha) 
+  this.acuerdosService.agregarAcuerdo(this.dataService.obtener_usuario(1), asunto, detalles,this.fecha)
+    .subscribe(
+      (respuesta: string) => {
+        Swal.fire({
+          title: 'Acuerdo agregado correctamente',
+          text: '',
+          icon: 'success',
+          confirmButtonText: 'Aceptar' 
+        })
+      //  this..reset(); 
+       // this.formCrear.resetForm();
+        console.log('Acuerdo agregado:', respuesta);
+        this.ngOnInit();
+        //location.reload();
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Por favor, complete todos los campos',
+          text: '',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        })
+        console.error('Error al agregar acuerdo:', error);
+      }
+    );
+}
+
+
+  
+pageChanged(event: any) {
+  // Determinar la acción del paginator
+  if (event.previousPageIndex < event.pageIndex) {
+    // Se avanzó a la siguiente página
+    this.paginador_adelante();
+  } else if (event.previousPageIndex > event.pageIndex) {
+    // Se retrocedió a la página anterior
+    this.paginador_atras();
   }
+}
+
+
+
+  paginador_atras() {
+
+    if (this.indice - this.verdaderoRango >= 0) {
+      this.acuerdos1 = this.acuerdos.slice(this.indice - this.verdaderoRango, this.indice);
+      this.indice = this.indice - this.verdaderoRango;
+      this.cont--;
+    }
+  }
+
+  paginador_adelante() {
+    if (this.acuerdos.length - (this.indice + this.verdaderoRango) > 0) {
+      this.indice = this.indice + this.verdaderoRango;
+      this.acuerdos1 = this.acuerdos.slice(this.indice, this.indice + this.verdaderoRango);
+      this.cont++;
+     // this.consultarNotificacion
+    } 
+    
+  }
+
 
   consultarAcuerdos(): void {
     const idFraccionamiento = this.dataService.obtener_usuario(1); 
-    this.acuerdosService.consultarAcuerdos(idFraccionamiento).subscribe(
+   
+    this.acuerdosService.consultarAcuerdosPaginados(idFraccionamiento, 0, 100).subscribe(
       (data: Acuerdos[]) => {
-        this.acuerdos = data;
-      },
-      (error) => {
-        console.error('Error al obtener acuerdos:', error);
-        // Manejo de errores
-      }
-    );
+        
+        if(data.length!=0){ 
+          
+          this.acuerdos = data;
+          this.acuerdos1 = this.acuerdos.slice(this.indice, this.indice + this.verdaderoRango);
+        //  console.log(this.acuerdos1);
+          
+        }
+      });
   }
+
 
   eliminarAcuerdo(id_acuerdo: number,id_fraccionamiento: number): void {
     const idFraccionamiento = this.dataService.obtener_usuario(1); // Reemplaza con el ID de fraccionamiento correspondiente
@@ -73,11 +167,6 @@ ngOnInit(): void {
   }
 
 
-
-
-
-
-
   obtenerFechaActualFormateada(): string {
     const today = new Date();
     const year = today.getFullYear();
@@ -92,7 +181,31 @@ ngOnInit(): void {
     return `${year}-${month}-${day}`;
   // return `${day}-${month}-${year}`;
   }
-  
+   
+ 
+  onFechaSeleccionada() {
+    // Aquí puedes realizar las acciones que desees cuando se selecciona una fecha
+    console.log("Se seleccionó una fecha:", this.filtroFecha);
 
+    // Por ejemplo, podrías llamar a una función para filtrar datos basados en la fecha seleccionada
+    this.filtrarDatosPorFecha(this.filtroFecha);
+  }
 
+  filtrarDatosPorFecha(fecha: any) {
+
+    this.acuerdosService.consultarAcuerdosFecha(this.dataService.obtener_usuario(1), 0, 100, fecha ).subscribe(
+      (data: Acuerdos[]) => {
+        
+        if(data.length!=0){ 
+          
+          this.acuerdos = data;
+          this.indice = 0;
+          this.acuerdos1 = this.acuerdos.slice(0, this.verdaderoRango);
+        //  console.log(this.acuerdos1);
+          
+        }
+      });
+  }
 }
+
+

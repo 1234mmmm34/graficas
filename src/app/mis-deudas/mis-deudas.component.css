@@ -1,128 +1,406 @@
-body{
-    background-color: #EDFBE6;
+body {
+
+
+  background-color: #f2f3f4;
+  margin: 0%;
+  background-position: center center;
+
+}
+
+
+
+p {
+  margin-bottom: 30px;
+}
+
+
+tr{
+  height: 50px;
+}
+
+
+
+.contenedor2 {
+  height: 500px;
+  width: 70%;
+
+  overflow: hidden;
+  margin-left: 6%;
+  padding-top: 200px;
+  margin-top: 200px;
+  display: flexbox;
+}
+
+.noencontrado{
+
+
+  height: 740px;
+   
   }
-  .contenedor {
-      height:380px;
-      width:97%;
-      position:absolute; 
-      overflow:scroll;
-      top: 120px;
-      right:20px;
-      
-    }
+
+.div-noen {
+
+  display: flex;
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
   
-    form{
-      margin-left:50px;
-    }
+}
+
+
+
+
+#buscar {
+  position: absolute;
+  top: 180px;
+  margin-left: 6%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+
+  padding-top: 15px;
+  padding-left: 50px;
+  background-color: #ffffff;
+
+  width: 90%;
+  height: 8%;
+
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+
+input {
   
-    .contenedor1 {
-      width: 70%;
-      margin: auto;
-      height: 92%;
-      padding: 20px; 
-      margin-top: 1px;
-      position:absolute; top:23px; left:20px;
-      margin-left: 10%;
-      margin-bottom: 400px;
-  
-    }
-    
-    input{
-      width: 30%;
-    }
-    .fecha{
-      width: 300px; 
-    }
-  
-  .botones-container{
-      margin: auto;
+  text-align: center;
+  width: 300px;
+ 
+
+}
+
+
+
+.titulo {
+  text-align: justify !important;
+  padding-top: 20px;
+  margin-left: 100px;
+
+  color: rgb(97, 94, 94) !important;
+
+}
+
+#descripcion {
+  text-align: justify !important;
+  margin-left: 100px;
+  margin-right: 70px;
+  color: rgb(97, 94, 94) !important;
+}
+
+hr {
+  height: 10px;
+  border: 0;
+  box-shadow: 0 10px 10px -10px #a7a4a4 inset;
+}
+
+
+
+
+.boton-verde,
+.boton-amarillo,
+.boton-rojo,
+.boton-azul {
+  padding: 10px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 5px;
+  height: 10px;
+  cursor: pointer;
+
+
+
+}
+
+
+
+
+
+table {
+  background-color: #ffffff;
+  position: absolute;
+  top: 300px;
+  width: 90%;
+  font: 1em sans-serif;
+  margin: auto;
+
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pages {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 65%;
+  left: 40%;
+}
+
+mat-paginator {
+  background-color: transparent;
+}
+
+
+td {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Muestra puntos suspensivos (...) cuando el texto se desborda */
+  white-space: nowrap;
+  /* Evita que el texto se ajuste a múltiples líneas */
+
+}
+
+
+
+/*    MODAL   */
+
+
+
+
+
+
+@media screen and (max-width: 930px) {
+
+  body {
+    height: 1400px;
   }
-  
-    .titulo {
-      text-align: center;
-      color: rgb(0, 0, 0);
-    }
-    
-    .form {
-      display: flex;
-      flex-direction: column;
-  
-    }
-    
-    .Formulario{
-      display: flex;
-      flex-direction: column;
-     
-    }
-    
-    .boton-verde, .boton-amarillo, .boton-rojo, .boton-azul{
-      padding: 10px;
-      margin: 10px 5px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    
-      
-     
-    }
-    
-    .boton-verde {
-      background-color: #4CAF50; /* Verde */
-    
-      
-      color: white;
-    }
-    
-    .boton-azul {
-      background-color: blue; /* Azul */
-      color: white;
-    }
-    
-    
-    table, th ,td, thead, tr {
-      text-align: center;
-      width: 300px; 
-    
-    }
-  
-    
-   /* Estilos para la tabla */
-  /* Estilos para la tabla */
-  #example {
-    text-align: center;
-    width: 97%;
-    margin: auto;
-    border-collapse: collapse; /* Para que los bordes colapsen y se vean continuos */
-    border: none; /* Elimina los bordes predeterminados */
+
+  .contenedor2 {
+    height: 1200px;
+
   }
-  
-  /* Estilos para las celdas de la tabla */
-  #example td,
-  #example th {
-    border-bottom: 1px solid #ccc; /* Línea gris como borde inferior */
-    border-left: none; /* Elimina el borde izquierdo */
-    border-right: none; /* Elimina el borde derecho */
-    background-color: transparent; /* Fondo transparente para las celdas */
+
+  #buscar1 {
+    display: none;
   }
-  
-  
-  /* Estilos para todas las filas */
-  #example tr {
-    background-color: transparent; /* Fondo transparente para todas las filas */
+
+  .correo {
+    display: none;
   }
-  
-  /* Estilos para el borde inferior */
-  #example tr td,
-  #example tr th {
-    border-bottom: 2px solid black; /* Línea gris más gruesa como borde inferior */
+
+}
+
+
+@media screen and (max-width: 1330px) {
+
+  body {
+    height: 1400px;
   }
-  
-  /* Evitar que el borde inferior se muestre en la última fila */
-  #example tr:last-child td,
-  #example tr:last-child th {
-    border-bottom: none; /* Para la última fila, eliminar el borde inferior */
+
+  .contenedor2 {
+    height: 1200px;
+
   }
-  
-  
-  
-  
+
+  .boton {
+    display: none;
+  }
+
+  #telefono {
+    display: none;
+  }
+
+
+}
+
+
+
+@media screen and (max-width: 700px) {
+
+  table {
+    position: absolute;
+    left: 17px;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    width: 50px;
+  }
+
+  tr {
+    border: 1px solid #ccc;
+  }
+
+  td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+    white-space: normal;
+    text-align: left;
+
+    width: 100%;
+
+
+    /* Ajusta el ancho de la celda para que ocupe el 100% del ancho de la pantalla */
+
+    /* Elimina el padding izquierdo para que el contenido comience desde el borde izquierdo */
+    padding-left: 0;
+  }
+
+  td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    content: attr(data-label);
+    font-weight: bold;
+
+    /* Ajusta la posición izquierda del pseudo-elemento para que esté alineado correctamente */
+    left: 0;
+    /* Ajusta el ancho del pseudo-elemento para que ocupe el 100% del ancho de la celda */
+    width: 100%;
+  }
+
+  body {
+    height: 800px;
+  }
+
+
+
+
+
+
+  #buscar1,
+  .boton {
+    display: none;
+  }
+
+  #tbuscar {
+    margin-left: 20%;
+  }
+
+
+
+  #buscar {
+
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    padding-left: 50px;
+
+  }
+
+  thead {
+    width: 50px;
+  }
+
+  .asunto {
+    width: 30%;
+  }
+}
+
+
+
+
+
+
+
+
+
+/************************************* PANEL TABS THUMB **************************************/
+
+
+
+
+
+
+
+
+
+#prop {
+  left: 10px;
+}
+
+.tabs1 {
+  top: -2px;
+  width: 600px;
+
+}
+
+/* Thumbs */
+.tabs-thumbs1 {
+  margin: 0;
+  padding-left: 0;
+
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 100px;
+}
+
+.tabs-thumb1 {
+  margin-bottom: 13px;
+  display: inline-block;
+  line-height: 3;
+
+
+  margin-right: 200px;
+  display: block;
+
+  .eti {
+    display: block;
+
+    color: #9d9d9d;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 1px;
+
+    &:hover {
+      color: #173853;
+    }
+  }
+}
+
+/* Panels */
+.tabs-panels1 {
+  margin: 0;
+  height: 210px;
+  list-style: none;
+}
+
+.tabs-panel1,
+.tabs-thumb1.is-active a {
+  display: none;
+
+}
+
+/* Active */
+.tabs-thumb1.is-active a {
+  color: #17531f;
+
+  &:hover {
+    cursor: default;
+    color: #17531f;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: #17531f;
+  }
+}
+
+.tabs-thumbs1 {
+  text-align: center;
+  width: 700px;
+  position: absolute;
+  top: 430px
+}
+
+/* General page styling */

@@ -26,15 +26,7 @@ export class UsuariosComponent {
     this.fetchDataUsers(this.dataService.obtener_usuario(1));
    // this.fetchData(this.dataService.obtener_usuario(1));
   }
-/*
 
-  fetchData(id_administrador: any) {
-    this.dataService.fetchData(id_administrador).subscribe((fraccionamientos: fraccionamientos[]) => {
-      console.log(fraccionamientos);
-      this.fraccionamientos = fraccionamientos;
-    });
-  }
-*/
   fetchDataUsers(id_administrador: any) {
     this.dataService.fetchDataUsers(id_administrador).subscribe((usuarios: usuarios[]) => {
       console.log("fetch", usuarios);
@@ -62,7 +54,7 @@ export class UsuariosComponent {
   }
 
 
-
+  
   agregar_usuario(usuario: {
 
     id_usuario: number | undefined;
@@ -78,9 +70,6 @@ export class UsuariosComponent {
     contrasenia: string | undefined;
     confirmarContrasena: string | undefined;
 
-    //   Intercomunicador: string | undefined;
-    //   Codigo_Acceso: string | undefined;
-
   }) {
 
     if (usuario.contrasenia == usuario.confirmarContrasena) {
@@ -89,7 +78,7 @@ export class UsuariosComponent {
         nombre: usuario.nombre,
         apellido_pat: usuario.apellido_pat,
         apellido_mat: usuario.apellido_mat,
-        tipo_usuario: usuario.tipo_usuario,
+        tipo_usuario: "usuario",
         telefono: usuario.telefono,
         fecha_nacimiento: usuario.fecha_nacimiento,
         correo: usuario.correo,
@@ -226,18 +215,8 @@ export class UsuariosComponent {
 
   id_lote: any;
   id_fraccionamiento: any;
-/*
- actualizar_tesorero(id_fraccionamiento: number, id_tesorero: number){
 
-  return this.http.put("https://evaluacionesuas-001-site1.gtempurl.com/Fraccionamientos/Actualizar_Tesorero?id_fraccionamiento="+id_fraccionamiento+"&id_tesorero=4"+id_tesorero).subscribe(
-    (_response) => {
-      console.log("hola");
-      this.ngOnInit();
-
-    }
-  )
- }
-*/
+   
   delete(usuario: any) {
     this.id_fracc = usuario['id_persona'];
     return this.http.delete("https://localhost:44397/api/Personas/Eliminar_Persona?id_persona=" + this.id_fracc).subscribe(
@@ -248,6 +227,8 @@ export class UsuariosComponent {
 
 
       })
+
+      this.UserGroup.reset()
 
 
   }

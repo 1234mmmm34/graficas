@@ -14,15 +14,19 @@ export class NotificacionesService {
 
   constructor(private http: HttpClient) {}
 
+  agregarNotificacion(idFraccionamiento: number, tipo: string, idDestinatario: number, asunto: string, mensaje: string) {
+    const url = `${this.apiUrl}Agregar_Notificacion?id_fraccionamiento=${idFraccionamiento}&tipo=${tipo}&id_destinatario=${idDestinatario}&asunto=${asunto}&mensaje=${mensaje}`;
+    return this.http.post(url, {}, { responseType: 'text' });
+  }
 
   consultarNotificacionPorId(idFraccionamiento: number) {
     const url = `${this.apiUrl}Consultar_Notificacion?id_fraccionamiento=${idFraccionamiento}`;
     return this.http.get<Notificaciones[]>(url);
   }
 
-  consultarNotificacion(idFraccionamiento: number): Observable<Notificaciones[]> {
-    const url = `${this.apiUrl}Consultar_Notificaciones?id_fraccionamiento=${idFraccionamiento}`;
-    console.log("HOLAAAAA")
+  consultarNotificacion(idFraccionamiento: number, indice: number, rango: number, id_destinatario: number): Observable<Notificaciones[]> {
+    const url = `${this.apiUrl}Consultar_Notificaciones?id_fraccionamiento=${idFraccionamiento}&indice=${indice}&rango=${rango}&id_destinatario=${id_destinatario}`;
+    //console.log("HOLAAAAA")
     return this.http.get<Notificaciones[]>(url);
   }
 
@@ -31,5 +35,5 @@ export class NotificacionesService {
     return this.http.get<Notificaciones[]>(url);
   }
 
-  
+
 }

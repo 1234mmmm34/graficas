@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "proyecto_web",
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../../../Desktop/boton"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "boton"
+	}
+}

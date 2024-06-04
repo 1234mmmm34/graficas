@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./deudas-ordinarias.component.css']
 })
 export class DeudasOrdinariasComponent {
-  tipo_formulario: string=''; 
+  tipo_formulario: string='';
   httpclient: any;
   UserGroup: FormGroup;
   UserGroup2: FormGroup;
@@ -152,7 +152,7 @@ onChangeOption2(event:any){
   const selectedValue = event.target.value;
 
   if(selectedValue=='personalizado'){
-    this.especifico=true; 
+    this.especifico=true;
   }else{
     this.especifico=false;
     this.destinatario=selectedValue;

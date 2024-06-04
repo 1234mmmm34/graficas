@@ -6,16 +6,11 @@ import { inquilino, inquilinos } from "../modelos/inquilinos"
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { fraccionamiento, fraccionamientos } from "../modelos/fraccionamientos";
 import { usuario, usuarios } from "../modelos/usuarios"
-//import { inquilinos } from "../inquilinos/inquilinos.component"
 import { Observable, timeInterval } from 'rxjs';
 import Swal from 'sweetalert2'
 import { v4 as uuidv4 } from 'uuid';
 import { InvitacionService } from './invitacion.service';
 import { CorreoService } from './correo.service';
-
-
-
-
 
 
 @Component({
@@ -25,7 +20,7 @@ import { CorreoService } from './correo.service';
 })
 export class PropiedadesComponent {
 
-  tipo_formulario: string='';
+  tipo_formulario: string = '';
   httpclient: any;
   UserGroup: FormGroup;
   UserGroup1: FormGroup;
@@ -37,12 +32,14 @@ export class PropiedadesComponent {
   AbrirMenu: boolean = false;
   fraccionamientos: fraccionamientos[] = [];
   usuarios: usuarios[] = [];
+  usuarios1: usuarios[] = [];
   id_lote: any;
   id_renta: any;
   id_fraccionamiento: any;
   id_usuario_lote: any;
   nrSelect = "casa1";
   usuario = new usuario();
+  usuario1 = new usuario();
 
 
   onSelect(id_fraccionamiento: any) {
@@ -121,18 +118,10 @@ export class PropiedadesComponent {
   constructor(private http: HttpClient, private dataService: DataService, private fb: FormBuilder, private fb1: FormBuilder, private invitacionService: InvitacionService, private correoService: CorreoService) {
 
     this.UserGroup = this.fb.group({
-      //   id_fraccionamiento: ['16', Validators.required],
-      //    id_lote: ['', Validators.required],
-      //    id_fraccionamiento: [' ', Validators.required],
       descripcion: ['', Validators.required],
       tipo: ['', Validators.required],
       direccion: ['', Validators.required],
       tipo_formulario: ['', Validators.required],
-
-      //   id_propietario: ['', Validators.required],
-      //  id_renta: ['', Validators.required]
-
-
     })
 
 
@@ -178,6 +167,8 @@ export class PropiedadesComponent {
        })
        */
   }
+
+
   async agregar_usuario(usuario: {
 
     id_usuario: number | undefined;
@@ -198,24 +189,68 @@ export class PropiedadesComponent {
       tipo: string;
       direccion: string;
     },
-  usuario1: {
-    id_usuario: number | undefined;
-    nombre: string | undefined;
-    apellido_pat: string | undefined;
-    apellido_mat: string | undefined;
-    id_fraccionamiento: number | undefined;
-    tipo_usuario: string | undefined;
-    id_lote: number | undefined;
-    telefono: string | undefined;
-    fecha_nacimiento: Date | undefined;
-    correo: string | undefined;
-    contrasenia: string | undefined;
-    confirmarContrasena: string | undefined;
-  }, tipo_formulario: any) {
+    usuario1: {
+      id_usuario: number | undefined;
+      nombre: string | undefined;
+      apellido_pat: string | undefined;
+      apellido_mat: string | undefined;
+      id_fraccionamiento: number | undefined;
+      tipo_usuario: string | undefined;
+      id_lote: number | undefined;
+      telefono: string | undefined;
+      fecha_nacimiento: Date | undefined;
+      correo: string | undefined;
+      contrasenia: string | undefined;
+      confirmarContrasena: string | undefined;
+    }, tipo_formulario: any) {
 
-   //   console.log("var1", var1)
+    //   console.log("var1", var1)
+    //console.log("AQUI ENTRA")
 
     if (usuario.contrasenia == usuario.confirmarContrasena) {
+
+      if (this.correo_invitado !== '') {
+        usuario.nombre = "Correo enviado";
+        usuario.apellido_pat = "";
+        usuario.apellido_mat = "";
+        usuario.telefono = "";
+        usuario.fecha_nacimiento = new Date();
+
+
+        console.log("generarinvitacion");
+        const token = uuidv4();
+        console.log(token, this.correo_invitado, this.dataService.obtener_usuario(1), this.dataService.obtener_usuario(5), this.dataService.obtener_usuario(2), "propietario")
+        
+        var correo = this.correo_invitado;
+        this.invitacionService.generarInvitacion(token, this.correo_invitado, this.dataService.obtener_usuario(1), this.dataService.obtener_usuario(5), this.dataService.obtener_usuario(2), "propietario")
+          .subscribe(
+            response => {
+              console.log('Success:', response);
+              this.correoService.Enviar_Correo(correo, "haz sido invitado por tu administrador para unirte a una comunidad en linea\n por favor termina tu registro en el siguiente link: \n http://localhost:4200/Invitacion?token=" + token);
+             // this.enviarCorreo(correoElectronico, "haz sido invitado por tu administrador para unirte a una comunidad en linea\n por favor termina tu registro en el siguiente link: \n http://localhost:4200/Invitacion?token=" + token);
+              Swal.fire({
+                title: 'Invitacion enviada correctamente',
+                text: '',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+              })
+    
+            },
+            error => {
+              console.error('Error al generar la invitación:', error);
+    
+            }
+          );
+
+
+
+
+
+      }
+      else {
+        this.correo_invitado = "N/A"
+      }
+
 
       const params = {
         nombre: usuario.nombre,
@@ -224,16 +259,18 @@ export class PropiedadesComponent {
         tipo_usuario: "propietario",
         telefono: usuario.telefono,
         fecha_nacimiento: usuario.fecha_nacimiento,
-        correo: "N/A",
+        correo: this.correo_invitado,
         contrasenia: "na",
         id_fraccionamiento: this.dataService.obtener_usuario(1),
         id_administrador: this.dataService.obtener_usuario(1),
-        id_lote: 1
+        id_lote: 1,
+        hikvision: "permitido"
+
 
         //  Intercomunicador: 123,
         //  Codigo_acceso: "123"
       };
-      console.log(params)
+      console.log("PARAMSS: ", params)
       let direccion = "https://localhost:44397/api/Usuarios/Agregar_Usuario";
 
       const headers = new HttpHeaders({ 'myHeader': 'procademy' });
@@ -243,27 +280,30 @@ export class PropiedadesComponent {
         .subscribe((res) => {
           console.log("params: ", lote.descripcion, lote.direccion, lote.tipo);
 
-          if(tipo_formulario=='no'){
-            this.agregar_lote(lote.descripcion, lote.direccion, lote.tipo);
-          }
-          else{
-            this.agregar_arrendatario(usuario1, lote);
-          }
+          //  if(tipo_formulario=='no'){
+          //     this.agregar_lote(lote.descripcion, lote.direccion, lote.tipo);
+          //    }
+          //    else{
+          this.agregar_arrendatario(usuario1, lote, tipo_formulario);
+        //  this.agregarConCorreo("arrendatario", this.correo_invitado) 
+          //    }
 
           console.log(this.usuarios[0].fecha_nacimiento);
+
+
           // this.agregar_lote(this.UserGroup.value);
 
           //  this.agregar_lote(this.lote);
 
         },
-        (error)=>{
-          Swal.fire({
-            title: 'Agrega los datos del propietario',
-            text: '',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          })
-        });
+          (error) => {
+            Swal.fire({
+              title: 'Agrega los datos del propietario',
+              text: '',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            })
+          });
     }
     else {
       console.log("error: intentalo de nuevo");
@@ -279,7 +319,7 @@ export class PropiedadesComponent {
 
 
 
-  
+
   async agregar_arrendatario(usuario: {
 
     id_usuario: number | undefined;
@@ -299,11 +339,55 @@ export class PropiedadesComponent {
       descripcion: string;
       tipo: string;
       direccion: string;
-    }) {
+    }, tipo_formulario: any) {
 
-   //   console.log("var1", var1)
+    //   console.log("var1", var1)
 
     if (usuario.contrasenia == usuario.confirmarContrasena) {
+
+      if (this.correo_invitado1 !== '') {
+        usuario.nombre = "Correo enviado";
+        usuario.apellido_pat = "";
+        usuario.apellido_mat = "";
+        usuario.telefono = "";
+
+        
+        console.log("generarinvitacion");
+        const token = uuidv4();
+        console.log(token, this.correo_invitado1, this.dataService.obtener_usuario(1), this.dataService.obtener_usuario(5), this.dataService.obtener_usuario(2), "arrendatario")
+        
+        var correo = this.correo_invitado1;
+        this.invitacionService.generarInvitacion(token, this.correo_invitado1, this.dataService.obtener_usuario(1), this.dataService.obtener_usuario(5), this.dataService.obtener_usuario(2), "arrendatario")
+          .subscribe(
+            response => {
+              console.log('Success:', response);
+              this.correoService.Enviar_Correo(correo, "haz sido invitado por tu administrador para unirte a una comunidad en linea\n por favor termina tu registro en el siguiente link: \n http://localhost:4200/Invitacion?token=" + token);
+             // this.enviarCorreo(correoElectronico, "haz sido invitado por tu administrador para unirte a una comunidad en linea\n por favor termina tu registro en el siguiente link: \n http://localhost:4200/Invitacion?token=" + token);
+              Swal.fire({
+                title: 'Invitacion enviada correctamente',
+                text: '',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+              })
+    
+            },
+            error => {
+              console.error('Error al generar la invitación:', error);
+    
+            }
+          );
+      }else{
+        this.correo_invitado1='N/A'
+      }
+
+      if (tipo_formulario == 'no') {
+        usuario.nombre = "N/A";
+        usuario.apellido_pat = "";
+        usuario.apellido_mat = "";
+        usuario.telefono = "";
+        usuario.fecha_nacimiento = new Date();
+        usuario.correo = "";
+      }
 
       const params = {
         nombre: usuario.nombre,
@@ -312,11 +396,12 @@ export class PropiedadesComponent {
         tipo_usuario: "arrendatario",
         telefono: usuario.telefono,
         fecha_nacimiento: usuario.fecha_nacimiento,
-        correo: "N/A",
+        correo: this.correo_invitado1,
         contrasenia: "na",
         id_fraccionamiento: this.dataService.obtener_usuario(1),
         id_administrador: this.dataService.obtener_usuario(1),
-        id_lote: 1
+        id_lote: 1,
+        hikvision: "permitido"
 
         //  Intercomunicador: 123,
         //  Codigo_acceso: "123"
@@ -329,24 +414,24 @@ export class PropiedadesComponent {
         direccion,
         params, { headers: headers })
         .subscribe((res) => {
-          console.log("params: ", lote.descripcion, lote.direccion, lote.tipo);
-
+          //   console.log("params: ", lote.descripcion, lote.direccion, lote.tipo);
+          // if()
           this.agregar_lote(lote.descripcion, lote.direccion, lote.tipo);
 
-          console.log(this.usuarios[0].fecha_nacimiento);
+          //  console.log(this.usuarios[0].fecha_nacimiento);
           // this.agregar_lote(this.UserGroup.value);
 
           //  this.agregar_lote(this.lote);
 
         },
-        (error)=>{
-          Swal.fire({
-            title: 'Completa los datos del arrendatario',
-            text: '',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          })
-        });
+          (error) => {
+            Swal.fire({
+              title: 'Completa los datos del arrendatario',
+              text: '',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            })
+          });
     }
     else {
       console.log("error: intentalo de nuevo");
@@ -356,6 +441,7 @@ export class PropiedadesComponent {
     //this.fetchDataLastUser();
     this.UserGroup.reset();
     this.UserGroup1.reset();
+    this.UserGroup2.reset();
 
   }
 
@@ -417,15 +503,7 @@ export class PropiedadesComponent {
       this.fraccionamientos = fraccionamientos;
     });
   }
-  /*
-  fetchDataUsers(id_administrador: any) { 
-    this.dataService.fetchDataUsers(id_administrador).subscribe((usuarios: usuarios[]) => {
-      console.log("fetch", usuarios); 
-      this.usuarios = usuarios;
-      console.log("this.usuarios: ", this.usuarios); 
-    });
-  }
-  */
+ 
   fetchDataPropiedades(id_administrador: any) {
     this.dataService.fetchDataPropiedades(id_administrador).subscribe((lotes: lotes[]) => {
       console.log("usuarios:", lotes);
@@ -497,7 +575,7 @@ export class PropiedadesComponent {
       direccion: direccio,
       id_propietario: this.last + 1,
       id_administrador: this.dataService.obtener_usuario(1),
-      id_renta:  this.last + 2,
+      id_renta: this.last + 2,
       nombre: "",
       nombre_renta: ""
     };
@@ -517,19 +595,20 @@ export class PropiedadesComponent {
           icon: 'success',
           confirmButtonText: 'Aceptar'
         })
+        /*
         setTimeout(() => {
           location.reload()
         }, 2000);
-
-      },      //jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj     
-      (error)=>{
-        Swal.fire({
-          title: 'Invitacion generada correctamente',
-          text: '',
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        })
-      }); 
+*/
+      },
+        (error) => {
+          Swal.fire({
+            title: 'Invitacion generada correctamente',
+            text: '',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          })
+        });
 
   }
   processResults() {
@@ -599,90 +678,18 @@ export class PropiedadesComponent {
     )
 
   }
-
+ 
   /* parte de enviar el correo electronico coon la invitacion*/
   /* parte de enviar el correo electronico coon la invitacion*/
   /* parte de enviar el correo electronico coon la invitacion*/
   correo_invitado: string = '';
-
-  agregarConCorreo(descripcion: string, tipo: string, direccion: string) {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (emailPattern.test(this.correo_invitado)) {
-      this.generarInvitacion(this.correo_invitado, this.dataService.obtener_usuario(1))
-      this.agregar_lote(descripcion, tipo, direccion);
-    } else {
-      Swal.fire({
-        title: 'Correo Electrónico no válido',
-        text: 'Por favor verifica el formato del correo electronico introducido',
-        icon: 'error',
-        confirmButtonText: 'Aceptar'
-      })
-    }
-
-  }
-  /*
-  generarInvitacion(correoElectronico: string, idFraccionamiento: number): void {
-    const token = uuidv4();
-    this.invitacionService.generarInvitacion(token,correoElectronico, idFraccionamiento, )
-      .subscribe(
-        response => {
-          console.log('Success:', response);
-          this.enviarCorreo(correoElectronico,"haz sido invitado por tu administrador para unirte a una comunidad en linea\n por favor termina tu registro en el siguiente link: \n http://localhost:4200/Invitacion?token="+token);
-          Swal.fire({
-            title: 'Invitacion enviada correctamente',
-            text: '',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          })
-          
-        },
-        error => {
-          console.error('Error al generar la invitación:', error);
-          
-        }
-      );
-  }
-  */
+  correo_invitado1: string = '';
 
 
-
-  //id_lote:number=6; // esta variable es la que envia para registrar la invitacion
-  id_loteParaMostrar: number = 0; //esta variable es la que recibe el valor de la consulta
-  nomber_fraccionamiento: string = 'cracatoa'
-  nombre_admin: string = 'chayo fierro';
-  tipo_usuario: string = 'tesorero';
-  generarInvitacion(correoElectronico: string, idFraccionamiento: number): void {
-    const token = uuidv4();
-    this.invitacionService.generarInvitacion(token, correoElectronico, idFraccionamiento, this.id_lote, this.nomber_fraccionamiento, this.nombre_admin, this.tipo_usuario)
-      .subscribe(
-        response => {
-          console.log('Invitacion generada correctamente:', correoElectronico, response);
-          Swal.fire({
-            title: 'Invitacion generada correctamente',
-            text: '',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          })
-          this.enviarCorreo(correoElectronico, "haz sido invitado por tu administrador para unirte a una comunidad en linea\n por favor termina tu registro en el siguiente link:\n http://localhost:4200/Invitacion?token=" + token);
-        },
-        error => {
-          Swal.fire({
-            title: 'Error al generar la invitación',
-            text: '',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          })
-          console.error('Error al generar la invitación:', error);
-
-        }
-      );
-  }
   enviarCorreo(correoDestinatario: string, mensaje: string): void {
     this.correoService.Enviar_Correo(correoDestinatario, mensaje);
   }
-  /* fin de parte de enviar el correo electronico coon la invitacion*/
-  /* fin de parte de enviar el correo electronico coon la invitacion*/
-  /* fin de parte de enviar el correo electronico coon la invitacion*/
+
 
 }
 

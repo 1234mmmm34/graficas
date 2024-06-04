@@ -2,12 +2,34 @@
 .container {
     width: 40%;
     margin: 0 auto;
-    background: linear-gradient(rgb(201, 231, 201),rgb(241, 241, 241), rgb(255, 255, 255));
+    background: linear-gradient(rgb(191, 192, 199),rgb(213, 214, 219), rgb(236, 237, 241));
     border-radius: 10px;
     padding: 20px;
     color: white;
     margin-top: 50px;
 }
+
+
+.titulo1 {
+    text-align: justify !important;
+    padding-top: 20px;
+    margin-left: 100px;
+    color: rgb(97, 94, 94) !important;
+  
+  }
+  
+  #descripcion {
+    text-align: justify !important;
+    margin-left: 100px;
+    color: rgb(97, 94, 94) !important;
+  }
+  
+  hr {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #a7a4a4 inset;
+  }
+  
 
 .titulo {
     text-align: center;

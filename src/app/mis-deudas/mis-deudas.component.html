@@ -1,48 +1,68 @@
 <body>
-    <div class="contenedor1">
-        <h2 class="titulo">Mis Deudas</h2>
-        <form>
-            <input type="text" class="form-control" name="filtrar" placeholder="buscar" [(ngModel)]="filtroDeudores">
-        </form>
-        <div class="contenedor">
 
-            <div class="form">
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Persona</th>
-                            <th>Tipo de Deuda</th>
-                            <th>Nombre de Deuda</th>
-                            <th>Monto</th>
-                            <th>ultimo pago</th>
-                            <th>Fecha de pago</th>
-                            <th>Periodicidad</th>
-                            <th>Retraso (dias)</th>
-                            <th>Recargo (por cada periodo atrasado)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let deudor of Deudores_totales;let deudor2 of Deudores_totales2; let i = index">
-                            <th scope="row">{{ i + 1 }}</th>
-                            <td>{{ deudor.nombre_persona }}</td>
-                            <td>{{ deudor.tipo_deuda }}</td>
-                            <td>{{ deudor.nombre_deuda }}</td>
-                            <td>{{ deudor.monto }}</td>
-                            <td class="fecha">{{ formatearFecha(deudor.proximo_pago) }}</td>
-                            <td>
-                                {{calcularProximoPago(deudor.proximo_pago,deudor.periodicidad)}}
-                            </td>
-                            <td>{{deudor.periodicidad}}</td>
-                            <td class="dias-retraso">{{ calcularDiasRetraso(deudor.proximo_pago,deudor.periodicidad) }}</td>
-                            <td>{{deudor.recargo}}</td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
-                
+
+    <div>
+        <h2 class="titulo">Mis deudas activas</h2>
+        <p id="descripcion">Paga tus deudas y toma el control de tus finanzas.</p>
+    </div>
+
+    <hr>
+
+    <div class="contenedor">
+ 
+        <div id="buscar">
+            <input type="text" class="form-control" name="filtrar" placeholder="buscar" [(ngModel)]="filtroDeudores">
+        </div>
+
+        <div class="contenedor2" *ngIf="this.Deudores_totales.length>0; else noencontrado">
+
+            <table id="example" class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Persona</th>
+                        <th>Tipo de Deuda</th>
+                        <th>Nombre de Deuda</th>
+                        <th>Monto</th>
+                        <th>ultimo pago</th>
+                        <th>Fecha de pago</th>
+                        <th>Periodicidad</th>
+                        <th>Retraso (dias)</th>
+                        <th>Recargo (por cada periodo atrasado)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let deudor of Deudores_totales;let deudor2 of Deudores_totales2; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ deudor.nombre_persona }}</td>
+                        <td>{{ deudor.tipo_deuda }}</td>
+                        <td>{{ deudor.nombre_deuda }}</td>
+                        <td>${{ deudor.monto}} MXN</td>
+                        <td class="fecha">{{ formatearFecha(deudor.proximo_pago) }}</td>
+                        <td>
+                            {{calcularProximoPago(deudor.proximo_pago,deudor.periodicidad)}}
+                        </td>
+                        <td>{{deudor.periodicidad}}</td>
+                        <td class="dias-retraso">{{ calcularDiasRetraso(deudor.proximo_pago,deudor.periodicidad) }}</td>
+                        <td>${{deudor.recargo}} MXN</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="pages">
+                <mat-paginator [length]="Deudores_totales.length" [pageSize]="verdaderoRango"
+                    [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" (page)="pageChanged($event)">
+                </mat-paginator>
             </div>
         </div>
-    </div>
-</body>
 
+
+    </div>
+
+    <ng-template #noencontrado>
+        <div class="div-noen">
+            <img class="noencontrado" src="./no-en1.jpg">
+        </div>
+    </ng-template> 
+</body>

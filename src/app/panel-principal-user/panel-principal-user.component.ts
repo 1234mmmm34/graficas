@@ -4,16 +4,22 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import { DataService } from '../data.service';
 import { Router } from "@angular/router";
 import { ImagenService } from '../panel-principal-admin/imagen.service';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { featherAirplay, featherUser } from '@ng-icons/feather-icons';
 
 @Component({
   selector: 'app-panel-principal-user',
   templateUrl: './panel-principal-user.component.html',
-  styleUrls: ['./panel-principal-user.component.css']
+  styleUrls: ['./panel-principal-user.component.css'],
+ // standalone: true,
+  //imports: [NgIconComponent],
+  //providers: [provideIcons({ featherAirplay, featherUser })],
 })
+
 export class PanelPrincipalUserComponent {
   mobileQuery: MediaQueryList;
   usuario: any;
-
+ 
   //fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
 
@@ -23,9 +29,12 @@ export class PanelPrincipalUserComponent {
     {name:"Proveedores", route:"Proveedores_usuarios", icon:"explore"},
     {name:"Acceso a puerta",route:"AccesoPuerta", icon:"dashboard"},
     {name:'Acuerdos',route:"Acuerdos_usuarios", icon:"supervised_user_circle"},
+    {name:'Configuracion',route:'Settings',icon:'settings'},
+
     {name:'',route:"", icon:"", children: [
       {name:'',route:"", icon:""}
     ]},
+    
    // {name:'Salir',route:"NotFound", icon:"fa-sign-out "}
   ]
 
@@ -62,7 +71,7 @@ Nav: any;
   shouldRun = true;
 
   ngOnInit(): void {
-    this.usuario = this.dataService.obtener_usuario(2);
+    this.usuario = this.dataService.obtener_usuario(8);
   }
 
   submenuAbierto: number = -1;

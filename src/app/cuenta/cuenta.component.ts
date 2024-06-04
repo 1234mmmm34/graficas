@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuario } from './usuario.model';
 import { ImageService } from './image.service';
 import { Personas } from './personas.model';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -14,24 +15,35 @@ import { Personas } from './personas.model';
   styleUrls: ['./cuenta.component.css']
 })
 export class CuentaComponent {
-  usuario: Usuario= {
-    nombre:'',
+  usuario: Usuario = {
+    nombre: '',
     apellido_pat: '',
     apellido_mat: '',
     telefono: '',
     fecha_nacimiento: '',
     contrasenia: '',
     confirmarContrasena: '',
-    correo:'',
-    id_fraccionamiento:'',
+    correo: '',
+    id_fraccionamiento: '',
   };
+
+  nombre: any;
+  apellido_pat: any;
+  apellido_mat: any;
+  correo: any;
+  tipo_usuario: any;
+  comunidad: any;
+  telefono: any;
+  fecha_nacimiento: any;
+
   //usuario = new usuario();
-  persona:Personas[]=[];
+  persona: Personas[] = [];
   UserGroup: FormGroup;
 
   ngOnInit(): void {
 
     this.fetchDataUsers(this.dataService.obtener_usuario(1));
+    this.Cargar_Imagen(this.dataService.obtener_usuario(1));
     //this.fetchData(this.dataService.obtener_usuario(1));
   }
 
@@ -40,23 +52,49 @@ export class CuentaComponent {
     this.dataService.consultarPersonaIndividual(id_administrador).subscribe((personas: Personas[]) => {
       console.log("fetch", personas);
       this.persona = personas;
-  
+
+
       if (personas.length > 0) {
         const user = personas[0];
+        this.nombre = personas[0].nombre
+        this.apellido_pat = personas[0].apellido_pat
+        this.apellido_mat = personas[0].apellido_mat
+        this.tipo_usuario = personas[0].tipo_usuario
+        this.telefono = personas[0].telefono
+
+        let fecha = new Date(personas[0].fecha_nacimiento); // Suponiendo que tienes una fecha
+        let dia = fecha.getDate(); // Obtiene el día del mes (1-31)
+        let mes = fecha.getMonth(); // Obtiene el mes (0-11)
+      //  let anio = fecha.getFullYear(); // Obtiene el año
+      let anio = 2001; // Obtiene el año
+
+        // Array con los nombres de los meses
+        let nombresMeses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+        // Construir la oración legible
+        this.fecha_nacimiento = `Nació el ${dia} de ${nombresMeses[mes]} de ${anio}`;
+
+        console.log(this.fecha_nacimiento);
+
+        // this.comunidad=this.dataService.obtener_usuario(5);
+        this.comunidad = "villa fontana";
+
+        this.correo = personas[0].correo
+
         const patchValueObj = {
           id_persona: user.id_persona || '',
           nombre: user.nombre || '',
           apellido_pat: user.apellido_pat || '',
           apellido_mat: user.apellido_mat || '',
           tipo_usuario: user.tipo_usuario || '',
-        
+
           telefono: user.telefono || '',
           fecha_nacimiento: user.fecha_nacimiento || '', // Aquí asigna un valor predeterminado en caso de ser null
           correo: user.correo || '',
           contrasenia: user.contrasenia || '',
           id_fraccionamiento: user.id_fraccionamiento || '',
         };
-  
+
         this.UserGroup.patchValue(patchValueObj);
       } else {
         // Si no se encuentra ninguna persona, podrías establecer valores predeterminados o limpiar el formulario
@@ -76,10 +114,10 @@ export class CuentaComponent {
       }
     });
   }
-  
-  
 
-  
+
+
+
   constructor(private http: HttpClient, private dataService: DataService, private fb: FormBuilder, private imageService: ImageService) {
 
     this.UserGroup = this.fb.group({
@@ -102,7 +140,7 @@ export class CuentaComponent {
 
 
 
-  
+
   actualizar_usuario(
     usuarios: {
       id_persona: string,
@@ -111,7 +149,7 @@ export class CuentaComponent {
       apellido_mat: string,
       tipo_usuario: string,
       telefono: any,
-      fecha_nacimiento: any,
+      fecha_nacimiento: Date,
       intercomunicador: any,
       codigo_Acceso: any,
       id_fraccionamiento: number,
@@ -127,7 +165,7 @@ export class CuentaComponent {
       apellido_mat: usuarios.apellido_mat,
       telefono: usuarios.telefono,
       id_fraccionamiento: this.dataService.obtener_usuario(1),
-      tipo_usuario: "administrador",
+      tipo_usuario: this.dataService.obtener_usuario(7),
       intercomunicador: "123",
       codigo_acceso: "123",
       fecha_nacimiento: usuarios.fecha_nacimiento,
@@ -148,10 +186,29 @@ export class CuentaComponent {
 
     return this.http.put("https://localhost:44397/api/Personas/Actualizar_Persona", params).subscribe(
       (_response) => {
+
+        Swal.fire({
+          title: 'Datos actualizados correctamente',
+          text: '',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          showCancelButton: false,
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // Acción a realizar después de que el usuario hace clic en Cancelar
+            console.log('Usuario hizo clic en Cancelar');
+            // Puedes realizar acciones adicionales aquí
+          }
+        });
+
+
         console.log("hola");
         console.log("https://localhost:44397/api/Personas/Actualizar_Persona", params);
-        
-    
+
+
         this.ngOnInit();
 
       }
@@ -163,7 +220,7 @@ export class CuentaComponent {
   imagenSeleccionada: any; // Variable para mostrar la imagen seleccionada en la interfaz
   archivoSeleccionado: File | null = null;
   imagenEnBytes: Uint8Array | null = null;
-  
+
 
   handleInputFile(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -174,7 +231,7 @@ export class CuentaComponent {
         reader.onload = () => {
           this.imagenSeleccionada = reader.result as string;
           this.archivoSeleccionado = file; // Guardar el archivo seleccionado
-  
+
           this.uploadFileToService(); // Llamar al método para subir el archivo al servicio
         };
         reader.readAsDataURL(file);
@@ -182,34 +239,96 @@ export class CuentaComponent {
     }
     input.value = ''; // Limpiar el input de tipo file
   }
-  
-  
-  
+
+
+
   uploadFileToService(): void {
     if (this.archivoSeleccionado) { // Verificar si archivoSeleccionado no es null
       this.imageService.PostFile(this.dataService.obtener_usuario(1), this.archivoSeleccionado)
         .subscribe(response => {
           // Manejar la respuesta del servicio si es necesario
           console.log('Archivo cargado con éxito', response);
+
+
+          Swal.fire({
+            title: 'Fotografía actualizada correctamente',
+            text: '',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            showCancelButton: false,
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Acción a realizar después de que el usuario hace clic en Aceptar
+              console.log('Usuario hizo clic en Aceptar');
+              // Puedes realizar acciones adicionales aquí
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              // Acción a realizar después de que el usuario hace clic en Cancelar
+              console.log('Usuario hizo clic en Cancelar');
+              // Puedes realizar acciones adicionales aquí
+            }
+          });
+
+
+
         }, error => {
-          // Manejar errores si la carga falla
-          console.error('Error al cargar el archivo', error);
+
+
+          Swal.fire({
+            title: 'Fotografía actualizada correctamente',
+            text: '',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            showCancelButton: false,
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              // Acción a realizar después de que el usuario hace clic en Cancelar
+              console.log('Usuario hizo clic en Cancelar');
+              // Puedes realizar acciones adicionales aquí
+            }
+          });
+
+
         });
     }
+  }
+
+  Cargar_Imagen(id_persona: number) {
+    const id_Pago = 3; //  ID correspondiente
+    this.imageService.obtenerImagenPorId(id_persona).subscribe(
+      (imagen: ArrayBuffer) => {
+        this.createImageFromBlob(new Blob([imagen]));
+      },
+      error => {
+        console.error('Error al obtener la imagen', error);
+      }
+    );
+  }
+
+  createImageFromBlob(image: Blob): void {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      this.imagenSeleccionada = reader.result as string;
+    }, false);
+
+    if (image) {
+      reader.readAsDataURL(image);
     }
-  
-  
+  }
 
 
-//menu cambio de contrasenia
-showPopupForm = false;
+  //menu cambio de contrasenia
+  showPopupForm = false;
 
-mostrarFormulario(): void {
-  this.showPopupForm = true;
-}
+  mostrarFormulario(): void {
+    this.showPopupForm = true;
+  }
 
-ocultarFormulario(): void {
-  this.showPopupForm = false;
-}
+  ocultarFormulario(): void {
+    this.showPopupForm = false;
+  }
 
 }

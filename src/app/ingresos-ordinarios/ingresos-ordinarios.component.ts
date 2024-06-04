@@ -9,6 +9,7 @@ import { Deudores } from '../ingresos-extraordinarios/deudores.model';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { deuda } from '../modelos/deudas';
+import { ComprobanteService } from './comprobante.service';
 
 @Component({
   selector: 'app-ingresos-ordinarios',
@@ -33,7 +34,7 @@ export class IngresosOrdinariosComponent {
 
   
 
-constructor(private dataService:DataService,private deudaService:DeudaService,private personasService:PersonasService,public router: Router){}
+constructor(private dataService:DataService,private deudaService:DeudaService,private personasService:PersonasService,public router: Router, private comprobanteService:ComprobanteService){}
 ngOnInit(): void{
   this.consultarPersonas(this.dataService.obtener_usuario(3));
   console.log(this.personas);
@@ -138,40 +139,61 @@ pagarDeudaOrdinaria() {
   const idFraccionamiento = this.dataService.obtener_usuario(3); // Reemplaza con el ID del fraccionamiento correspondiente
   const proximoPago = this.fechaProximoPago; // Reemplaza con la fecha deseada en el formato correcto
 
-  this.deudaService.pagarDeudaOrdinaria(idDeudor, idDeuda, idFraccionamiento, proximoPago).subscribe(
-    (respuesta) => {
-      if (respuesta) {
-        console.log('La deuda ha sido pagada exitosamente');
-        this.onChangeDeuda({ target: { selectedIndex: 0 } });
-        this.onChangeUsuario({ target: { selectedIndex: 0 } });
-        Swal.fire({
-          title: 'La deuda ha sido pagada exitosamente',
-          text: '',
-          icon: 'success',
-          confirmButtonText: 'Aceptar'
-        });
-      } else {
-        console.log('Hubo un problema al pagar la deuda');
+  if(this.archivoSeleccionado){
+ 
+    this.deudaService.pagarDeudaOrdinaria(idDeudor, idDeuda, idFraccionamiento, proximoPago,this.archivoSeleccionado).subscribe(
+      (respuesta) => {
+        if (respuesta) {
+          console.log('La deuda ha sido pagada exitosamente');
+          this.onChangeDeuda({ target: { selectedIndex: 0 } });
+          this.onChangeUsuario({ target: { selectedIndex: 0 } });
+          Swal.fire({
+            title: 'La deuda ha sido pagada exitosamente',
+            text: '',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              window.location.reload();
+            }
+          });
+        } else {
+          console.log('Hubo un problema al pagar la deuda');
+          Swal.fire({
+            title: 'Hubo un problema al pagar la deuda',
+            text: '',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      },
+      (error) => {
+        console.error('Error al intentar pagar la deuda:', error);
         Swal.fire({
           title: 'Hubo un problema al pagar la deuda',
-          text: '',
+          text: 'Por favor contactese con el administrador de la pagina',
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
+        
       }
-    },
-    (error) => {
-      console.error('Error al intentar pagar la deuda:', error);
-      Swal.fire({
-        title: 'Hubo un problema al pagar la deuda',
-        text: 'Por favor contactese con el administrador de la pagina',
-        icon: 'error',
-        confirmButtonText: 'Aceptar'
-      });
-    }
-  );
-  window.location.reload();
+    );
+  }else{
+    Swal.fire({
+      title: 'Por favor cargue un comprobante de pago',
+      text: '',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+    
+  }
+  
 }
+
+
+
 
 
 onChangeOption(event:any){
@@ -183,4 +205,41 @@ onChangeOption(event:any){
     this.router.navigate(['./PanelTesorero/IngresosExtraordinarios']);
   }
 }
+
+
+
+//Parte de cargar comprobante
+
+
+imagenSeleccionada: any; // Variable para mostrar la imagen seleccionada en la interfaz
+  archivoSeleccionado: File | null = null;
+  imagenEnBytes: Uint8Array | null = null;
+  
+
+  handleInputFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input && input.files && input.files.length > 0) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagenSeleccionada = reader.result as string;
+          this.archivoSeleccionado = file; // Guardar el archivo seleccionado
+          Swal.fire({
+            title: 'Comprobante cargado correctamente',
+            text: '',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    input.value = ''; // Limpiar el input de tipo file
+  }
+  
+  
+  
+  
 }

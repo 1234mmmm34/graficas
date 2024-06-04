@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, retry } from 'rxjs';
 import { fraccionamientos, controladores } from '../app/modelos/fraccionamientos';
 import { sesion, sesions, usuarios } from '../app/modelos/usuarios'
-import {  deudas, deuda, deudores } from "../app/modelos/deudas"
+import {  deudas, deuda, deudores, graficas, historial, entradas } from "../app/modelos/deudas"
 import { lotes } from '../app/modelos/propiedades';
 import { inquilinos } from '../app/modelos/inquilinos';
 import {formatDate } from '@angular/common';
@@ -22,6 +22,11 @@ export class DataService {
   
   
   constructor(private http: HttpClient) {}
+
+  getPDF(): Observable<Blob> {
+    // Realiza la solicitud HTTP para obtener el PDF
+    return this.http.get("https://localhost:44397/Reportes/Reporte_Entradas", { responseType: 'blob' });
+  }
 
   fetchData(id_administrador: any): Observable<fraccionamientos[]> {
     return this.http.get<fraccionamientos[]>(this.baseUrl+id_administrador);
@@ -44,9 +49,6 @@ export class DataService {
     return this.http.get<usuarios[]>("https://localhost:44397/api/Personas/Consultar_Personas_Por_Lote?id_persona="+id_propietario);
 
   }
- 
-
-
 
   fetchDataPropiedades(id_administrador: any): Observable<lotes[]> {
     return this.http.get<lotes[]>(this.baseUrl2+id_administrador);
@@ -81,11 +83,39 @@ export class DataService {
   consultarPersonaIndividual(id_usuario:number): Observable<Personas[]>{
     return this.http.get<Personas[]>(`https://localhost:44397/api/Personas/Consultar_PersonaIndividual?id_persona=${id_usuario}`);
   }
- 
+
+  consultarCorreo(id_persona:number): Observable<Personas[]>{
+    return this.http.get<Personas[]>(`https://localhost:44397/api/Personas/Obtener_Correo_Persona?id_persona=${id_persona}`);
+  }
+
+
+  consultarDeudasPorCobrar(num: any):Observable<graficas[]>{
+    let direccion = `https://localhost:44397/api/Graficos/Consultar_DeudasPorCobrar?id_fraccionamiento=${this.obtener_usuario(num)}`;
+    return this.http.get<graficas[]>(direccion);
+  }
+
+  fetchDataHistorialDeudas(id_fraccionamiento: any): Observable<historial[]> {
+    return this.http.get<historial[]>('https://localhost:44397/api/Deudas/Consultar_HistorialDeudas?id_fraccionamiento='+id_fraccionamiento);
+  }
+
   iniciar_sesion1(sesion: {username: string, password:string}):Observable<sesions[]>{
   let direccion = "https://localhost:44397/Sesion/Iniciar_Sesion?correo="+sesion.username+"&contrasenia="+sesion.password;
   return this.http.get<sesions[]>(direccion);
   }
+
+  consultarEntradas():Observable<entradas[]>{
+    let direccion = `https://localhost:44397/api/Graficos/Consultar_Entradas`;
+    return this.http.get<entradas[]>(direccion);
+  }
+
+  async numeroRegistrosTabla(id_fraccionamiento: number, tabla: string){
+    let direccion = "https://localhost:44397/api/ControllerGlobal/Calcular_Registros?id_fraccionamiento="+id_fraccionamiento+"&tabla="+tabla;
+
+    const response = await this.http.get(direccion).toPromise();
+    return response as any; // Assuming the response is an object
+
+  }
+
 
   fecha(date: Date){
     return formatDate(date, 'yyyy-MM-dd', 'en-US');
@@ -101,13 +131,50 @@ export class DataService {
       }else if(op==3){
         return data.id_fraccionamiento;
         
-      }else if(op==4){
+      }else if(op==4){ 
         return data.id_lote;
+      }else if(op==5){
+        return data.fraccionamiento;
       }
+      else if(op==6){
+        return data.id_tesorero;
+      }
+      else if(op==7){
+        return data.tipo_usuario;
+      }
+      else if(op==8){
+        return data.nombre;
+      }
+      else if(op==9){
+        return data.conexion;
+      }
+      
 
     } 
 
   
+    
+    obtener_graficas(op: number){
+      var graficas = (JSON.parse(localStorage.getItem("graficas") || '{}'));
+      if(op==1){
+        return graficas.cuentas_cobrar;
+      }
+      else if(op==2){
+        return graficas.sum_variables;
+      }else if(op==3){
+        return graficas.sum_novariables;
+      }else if(op==4){
+        return graficas.variables;
+      }else if(op==5){
+        return graficas.novariables;
+      }
+      else if(op==6){
+        return graficas.por_variables;
+      }
+      else if(op==7){
+        return graficas.por_novariables;
+    }
+    }
 
 }
 

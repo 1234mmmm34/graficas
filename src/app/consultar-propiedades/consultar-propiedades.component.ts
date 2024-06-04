@@ -100,19 +100,6 @@ constructor(private router:Router, private http: HttpClient, private dataService
 
     })
 
-
-/*
-  
-  
-  this.UserGroup1 = this.fb1.group({
-    //   id_fraccionamiento: ['16', Validators.required],
-       id_usuario: ['', Validators.required],
-       nombre: ['', Validators.required],
-       codigo_acceso: ['', Validators.required],
-       intercomunicador: ['', Validators.required],
-      
-     })
-     */
   }
 
   fetchData(id_administrador: any) {
@@ -153,26 +140,6 @@ constructor(private router:Router, private http: HttpClient, private dataService
   id(id_propietario: any){
     console.log("id_propietario: ",id_propietario);
   }
-/*
-  
-  usuarios1 = {
-    nombre: '',
-    telefono: '',
-    correo: '',
-    id_persona: 0,
-    apellido_pat: undefined,
-    apellido_mat: undefined,
-    id_fraccionamiento: undefined,
-    tipo_usuario: undefined,
-    fecha_nacimiento: undefined,
-    contrasenia: undefined,
-    confirmarContrasena: undefined,
-    Intercomunicador: undefined,
-    Codigo_Acceso: undefined,
-    id_lote: undefined
-  }as const;
-
-  */
 
   //type usuarios1 = keyof typeof usuarios1;
 
@@ -212,25 +179,6 @@ constructor(private router:Router, private http: HttpClient, private dataService
 
 
 
-
-
-/*
-: {
-    id_persona: any;
-    nombre: any,
-    apellido_pat: any,
-    apellido_mat: any,
-    tipo_usuario: any,
-    telefono: any,
-    fecha_nacimiento: any,
-    correo: any,
-    contrasenia: any,
-    Intercomunicador: any,
-    Codigo_Acceso: any,
-    id_fraccionamiento: any,
-
-  }
-*/ 
 
   editUsers(nombre: any,
   telefono: any,
@@ -308,4 +256,35 @@ constructor(private router:Router, private http: HttpClient, private dataService
         });
   
     }
+
+
+    eliminar_inquilino(id_usuario_lote: any, codigo_acceso: any){
+      this.eliminarAcuerdo(id_usuario_lote, codigo_acceso).subscribe(
+        (respuesta: any) => {
+          console.log('Acuerdo eliminado:', respuesta);
+          Swal.fire({
+            title: 'Inquilino eliminado correctamente',
+            text: '',
+            icon: 'success' 
+          })
+          // Vuelve a cargar los acuerdos después de eliminar
+          this.fetchDataPersonasLote(this.usuarios[0].id_persona);
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error al eliminar inquilino',
+            text: '',
+            icon: 'error' 
+          })
+          console.error('Error al eliminar acuerdo:', error);
+          // Manejo de errores
+        }
+      );
+    }
+
+    eliminarAcuerdo(id_usuario_lote: any, codigo_acceso: any) {
+      return this.http.delete(`https://localhost:44397/api/Usuario_lote/Eliminar_inquilino?id_lote=${id_usuario_lote}&codigo_acceso=${codigo_acceso}`,{ responseType: 'text' });
+    }
+
+
 }

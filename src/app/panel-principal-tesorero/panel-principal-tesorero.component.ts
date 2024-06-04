@@ -22,6 +22,8 @@ export class PanelPrincipalTesoreroComponent {
    //{name:'Salir',route:'Home', icon:"exit_to_app"}
 
    // <font-awesome-icon icon="right-from-bracket" />
+
+   /*
    fillerNav=[
     {name:"Deudas", route:"", icon:"border_color",children:[
      {name:"Agregar Deudas", route:"Deudas", icon:"border_color"},
@@ -39,6 +41,41 @@ export class PanelPrincipalTesoreroComponent {
     
     
   ]
+*/
+/*
+  fillerNav=[
+    {name:"Deudas", route:"", icon:"border_color",children:[
+     {name:"Agregar Deudas", route:"Deudas", icon:"border_color"},
+     {name:'Consultar Deudas', route:'ConsultarDeudas', icon:'border_color'},
+    ]}, 
+    {name:"Deudores", route:"Deudores", icon:"report_problem"},
+    {name:"Egresos", route:"Egresos", icon:"call_made"},
+    {name:"Ingresos", route:"Egresos", icon:"call_received",children:[
+      {name:"Ingresos Extraordinarios",route:"IngresosExtraordinarios", icon:"call_received"},
+    {name:"Ingresos Ordinarios",route:"IngresosOrdinarios", icon:"call_received"},
+    ]},
+    {name:'Proveedores',route:"Proveedores", icon:"store_mall_directory"},
+    {name:'Usuarios',route:"Usuarios", icon:"supervised_user_circle", children: [
+      {name:"Consultar", route:"ConsultarUsuariosTesorero", icon:"class"}
+    ]},
+    {name:'Configuracion',route:'Settings',icon:'settings'},
+    {name:"Consultar", route:"ConsultarUsuariosTesorero", icon:"class"}
+
+  ]
+*/
+
+fillerNav=[
+  {name:"Deudas", route:"Deudas", icon:"border_color"},
+  {name:"Deudores", route:"Deudores", icon:"report_problem"},
+  {name:"Egresos", route:"Egresos", icon:"call_made"},
+  {name:"Ingresos", route:"Ingresos", icon:"call_received"},/*,
+  {name:"Ingresos", route:"Ingresos", icon:"call_received"},children:[
+    {name:"Ingresos Extraordinarios",route:"IngresosExtraordinarios", icon:"call_received"},
+    {name:"Ingresos Ordinarios",route:"IngresosOrdinarios", icon:"call_received"},
+  ]},*/
+  {name:'Proveedores',route:"Proveedores", icon:"store_mall_directory"},
+  {name:'Configuracion',route:'Settings',icon:'settings'},
+]
 
 
   exit() {
@@ -78,7 +115,7 @@ usuario: any;
   shouldRun = true;
 
   ngOnInit(): void {
-    this.usuario = this.data.obtener_usuario(2);
+    this.usuario = this.data.obtener_usuario(8);
     this.Cargar_Imagen(this.data.obtener_usuario(1));
   }
 

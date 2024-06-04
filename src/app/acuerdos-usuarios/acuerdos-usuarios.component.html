@@ -1,24 +1,54 @@
-<div class="container">
-    <h2 class="titulo">Lista de Acuerdos</h2>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ID Fraccionamiento</th>
-                <th>Asunto</th>
-                <th>Detalles</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let acuerdo of acuerdos">
-                <td>{{ acuerdo.id_acuerdo }}</td>
-                <td>{{ acuerdo.id_fraccionamiento}}</td>
-                <td>{{ acuerdo.asunto }}</td>
-                <td>{{ acuerdo.detalles }}</td>
-                <td>{{ acuerdo.fecha }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+
+
+<body>
+
+
+    <div>
+        <h2 class="titulo">Lista de Acuerdos</h2>
+    </div>
+
+    <hr>
+
+    <div class="contenedor">
+
+        <div id="buscar">
+            <input type="text" class="form-control" name="filtrar" placeholder="buscar">
+        </div>
+
+        <div class="contenedor2">
+
+
+            <table class="table" id="example">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Asunto</th>
+                        <th>Detalles</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let acuerdo of acuerdos1">
+                        <td>{{ acuerdo.id_acuerdo }}</td>
+                        <td>{{ acuerdo.asunto }}</td>
+                        <td>{{ acuerdo.detalles }}</td>
+                        <td>{{ acuerdo.fecha }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+        </div>
+
+        <div class="pages">
+            <mat-paginator [length]="acuerdos.length" [pageSize]="verdaderoRango"
+                [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" (page)="pageChanged($event)">
+            </mat-paginator>
+        </div>
+    </div>
+</body>
