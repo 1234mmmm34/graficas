@@ -10,6 +10,7 @@ h1{
 
 }
 
+
 .columna {
 
 
@@ -24,10 +25,13 @@ h1{
  }
 
  .cuadro{
-  border: 1px solid rgb(128, 125, 125); /* Añade bordes para visualizar las columnas */
-   box-shadow: 8px 8px 5px rgba(144, 143, 131, 0.5);
+  /*border: 1px solid rgb(128, 125, 125); /* Añade bordes para visualizar las columnas */
+
+
+   box-shadow: 2px 4px 4px 3px rgba(144, 143, 131, 0.5);
    width: 200px;
    margin-top: 10px;
+   border-radius: 3%;
    height: 89px;
    padding-left: 5px;
    padding-top: 5px;
@@ -71,9 +75,8 @@ h1{
  }
 
  #cuadro1{
-
-   border: 1px solid rgb(128, 125, 125); /* Añade bordes para visualizar las columnas */
-   box-shadow: 8px 8px 5px rgba(144, 143, 131, 0.5);
+   box-shadow: 2px 4px 4px 3px rgba(144, 143, 131, 0.5);
+   border-radius: 3%;
    margin-top: 10px;
    margin-bottom: 10px;
    width: 100%;
@@ -102,8 +105,8 @@ h1{
 
  #div1, #div2, #cdiv2, #cdiv3{
 
-   border: 1px solid rgb(128, 125, 125); /* Añade bordes para visualizar las columnas */
-   box-shadow: 8px 8px 5px rgba(144, 143, 131, 0.5);
+  box-shadow: 2px 4px 4px 3px rgba(144, 143, 131, 0.5);
+  border-radius: 3%;
 
  }
 
@@ -120,6 +123,7 @@ h1{
  #cdiv2{
    margin-top: 10px;
    padding-left: 10%;
+   padding-right: 2%;
    padding-top: 25px;
    padding-bottom: 15px;
  }
@@ -167,6 +171,12 @@ h1{
 .button-rojo {
   background-color: #f51717;
   border-color: #f51717;
+
+}
+
+.button-verde {
+  background-color: #2fbb13;
+  border-color: #2fbb13;
 
 }
 

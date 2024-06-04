@@ -13,18 +13,19 @@
 
             <div id="header">
                 <h2 class="titulo">¡Hola de nuevo!, {{nombre}}</h2>
-                <p id="descripcion">Te mostramos un resúmen del mes de mayo </p>
+                <p id="descripcion">Te mostramos un resúmen del mes de {{meses[mes]}} </p>
             </div>
             <hr>
             <div style="display: inline-block; width: 500px;">
                 <button id="conexion" class="button-rojo"></button>
-                <p style="display: inline-block;"> sin conexión a panel de acceso</p>
+                <p style="display: inline-block;"> {{conexion}} a panel de acceso</p>
             </div>
 
             <p style="padding-left: 50px; padding-top: 20px; font: 1em sans-serif; font-weight: bold;">Últimos accesos a la comunidad:</p>
 
             <div id="cdiv3">
 
+                
                 <table class="table" width="100%">
                     <thead>
                         <tr>

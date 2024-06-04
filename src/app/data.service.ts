@@ -148,6 +148,9 @@ export class DataService {
       else if(op==9){
         return data.conexion;
       }
+      else if(op==10){
+        return data.nom_controlador;
+      }
       
 
     } 

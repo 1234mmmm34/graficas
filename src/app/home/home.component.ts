@@ -30,8 +30,16 @@ export class HomeComponent {
   cuenta_cobrar: any;
   ingresos: any;
   nombre: any;
+  mes: any;
+  conexion: any;
 
-  async ngOnInit(){
+  meses = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+
+  async ngOnInit(){ 
+
 
    // this.fetchCuentasPorCobrar();
    this.nombre = this.dataService.obtener_usuario(8)
@@ -40,7 +48,31 @@ export class HomeComponent {
    console.log("cue: ",this.cuenta_cobrar)
     this.fetchEntradas();
 
+    const fecha_actual = new Date();
+    this.mes = fecha_actual.getMonth(); 
 
+    this.cambiarColorBoton();
+
+
+  }
+
+  cambiarColorBoton(): void {
+    const boton = document.getElementById("conexion");
+    if (boton) {
+      //const numeroAleatorio = Math.random();
+      if (this.dataService.obtener_usuario(9) == false) {
+        boton.classList.add("button-rojo");
+        boton.classList.remove("button-verde");
+        this.conexion = "sin conexion"
+      } else {
+        boton.classList.add("button-verde");
+        boton.classList.remove("button-rojo");
+        this.conexion = "conectado"
+
+      }
+    } else {
+      console.error("El botón con el id 'conexion' no se encontró en el DOM.");
+    }
   }
 
 /*
@@ -304,8 +336,9 @@ fetchCuentasPorCobrar() {
 				{  y: 3000, label: "Egresos ($ MXN)"}
 			]
 		}]
-	}
 
+  
+	}
 
 
 
