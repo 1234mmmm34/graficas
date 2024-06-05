@@ -15,7 +15,8 @@ import { Observable } from 'rxjs';
 })
 export class HomeComponent {
   ngZone: any;
-
+  showHelp: boolean = false;
+  
   constructor(private http: HttpClient, private dataService: DataService){}
 
   httpclient: any;
@@ -122,7 +123,7 @@ fetchCuentasPorCobrar() {
     const diaDeLaSemana = primerDiaDelMes.getDay();
     const primerSemana = Math.ceil((1 + 6 - diaDeLaSemana) / 7);
     const semanaActual = Math.ceil((fechaActual.getDate() + diaDeLaSemana) / 7);
-    this.semanaDelMes = semanaActual - primerSemana - 1;
+    this.semanaDelMes = semanaActual - primerSemana;
     return this.semanaDelMes
   }
 
@@ -242,7 +243,7 @@ fetchCuentasPorCobrar() {
       name: "Este mes",
       xValueFormatString: "MMM DD, YYYY",
       dataPoints: [
-        { x: new Date(2024, 4, 1), y: 63 },
+        { x: new Date(2024, 4, this.semana()-2), y: 63 },
         { x: new Date(2024, 4, 2), y: 59 },
         { x: new Date(2024, 4, 3), y: 65 },
         { x: new Date(2024, 4, 4), y: 70 },
@@ -263,7 +264,7 @@ fetchCuentasPorCobrar() {
       showInLegend: true,
       name: "Mes pasado",
       dataPoints: [
-        { x: new Date(2024, 4, 1), y: 60 },
+        { x: new Date(2024, 4, this.semana()-2), y: 60 },
         { x: new Date(2024, 4, 2), y: 57 },
         { x: new Date(2024, 4, 3), y: 51 },
         { x: new Date(2024, 4, 4), y: 56 },

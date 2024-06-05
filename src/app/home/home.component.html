@@ -21,11 +21,12 @@
                 <p style="display: inline-block;"> {{conexion}} a panel de acceso</p>
             </div>
 
-            <p style="padding-left: 50px; padding-top: 20px; font: 1em sans-serif; font-weight: bold;">Últimos accesos a la comunidad:</p>
+            <p style="padding-left: 50px; padding-top: 20px; font: 1em sans-serif; font-weight: bold;">Últimos accesos a
+                la comunidad:</p>
 
             <div id="cdiv3">
 
-                
+
                 <table class="table" width="100%">
                     <thead>
                         <tr>
@@ -37,7 +38,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr tr mat-row matRowDef="columns: displayedcolumns;" *ngFor="let entrada of entradas" height="40px">
+                        <tr tr mat-row matRowDef="columns: displayedcolumns;" *ngFor="let entrada of entradas"
+                            height="40px">
                             <td style=" font: 1em sans-serif;">{{entrada.id_entrada}}</td>
                             <td>{{entrada.fecha}}</td>
                             <td>{{entrada.nombre}}</td>
@@ -45,22 +47,36 @@
                     </tbody>
                 </table>
 
-                <button class="boton" (click)="reporte_entradas()"> <mat-icon>picture_as_pdf</mat-icon> Descargar reporte</button>
+                <button class="boton"> <mat-icon>picture_as_pdf</mat-icon> Descargar reporte</button>
             </div>
 
-           
+
         </div>
 
 
 
 
         <div class="columna1">
+
+            <div id="cuadro2" style="height: 60px; display: flex; padding-top: 10px; padding-left: 10px;">
+                <p style="margin-right: 10px; margin-top: 10px; margin-left: 10px;">Filtrar desde  </p>
+                <input type="text" class="textb" id="fechaInicio" style="margin-right: 10px; text-align: center;"
+                placeholder="fecha de inicio" onfocus="(this.type='date')" />
+                <p style="margin-top: 10px; margin-right: 10px;">hasta  </p>
+                <input type="text" class="textb" id="fechaFinal" style="text-align: center;"
+                placeholder="fecha final" onfocus="(this.type='date')" />
+
+
+
+            </div>
+
+
             <div id="cdiv1">
                 <div id="cdiv1c1">
                     <div class="cuadro">
                         <p>Proyección de ingresos para este mes (brutos)</p>
                         <p style="padding-left: 20px; color: green; font-weight: 700;">$30,100.00 MXN (+)</p>
-                    <!--   <p style="width: 50px; margin-left: 160px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="21.5 10 21.5 5 16.5 5" fill="none" stroke="#000" stroke-miterlimit="10"/><polyline points="21.5 5 13 13.5 9 9.5 2 16.5" fill="none" stroke="#000" stroke-miterlimit="10"/></svg></p> -->
+                        <!--   <p style="width: 50px; margin-left: 160px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="21.5 10 21.5 5 16.5 5" fill="none" stroke="#000" stroke-miterlimit="10"/><polyline points="21.5 5 13 13.5 9 9.5 2 16.5" fill="none" stroke="#000" stroke-miterlimit="10"/></svg></p> -->
                     </div>
                     <div class="cuadro">
                         <p>Proyección de egresos para este mes (brutos)</p>
@@ -70,7 +86,8 @@
                 <div id="cdiv1c2">
                     <div class="cuadro">
                         <p>Ingresos totales al día de hoy (brutos)</p>
-                        <p style="padding-left: 20px; color: green; font-weight: 700;">${{(ingresos).toFixed(2) | number:'1.2-2'}} MXN</p>
+                        <p style="padding-left: 20px; color: green; font-weight: 700;">${{(ingresos).toFixed(2) |
+                            number:'1.2-2'}} MXN</p>
                     </div>
                     <div class="cuadro">
                         <p>Egresos totales al día de hoy (brutos)</p>
@@ -81,9 +98,19 @@
             </div>
 
             <div id="cuadro1">
-                <p>Monto total en deudas por cobrar</p>
-                <p id="cuentas_cobrar">${{(cuenta_cobrar).toFixed(2) | number:'1.2-2'}} MXN</p>
+                <div style="display: flex;">
+                    <p>Monto total en cuentas por cobrar</p>
+                    <button class="help-button" (mouseover)="showHelp=true" (mouseout)="showHelp=false">?</button>
+                    <span *ngIf="showHelp" class="help-message">Se define como la suma de las deudas con sus respectivos
+                        recargos </span>
+                </div>
+
+                <div>
+                    <p id="cuentas_cobrar">${{(cuenta_cobrar).toFixed(2) | number:'1.2-2'}} MXN</p>
+                </div>
+
             </div>
+
 
             <div id="cdiv2">
                 <canvasjs-chart [options]="chartOptions2" [styles]="{width: '85%', height:'376px'}"></canvasjs-chart>
@@ -92,6 +119,9 @@
         </div>
 
         <div class="columna">
+
+
+
             <div id="div1">
                 <canvasjs-chart [options]="chartOptions" [styles]="{width: '90%', height:'267px'}"></canvasjs-chart>
             </div>
