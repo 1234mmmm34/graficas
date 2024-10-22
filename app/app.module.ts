@@ -19,10 +19,10 @@ import { PruebaComponent } from './prueba/prueba.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { PanelPrincipalAdminComponent } from './panel-principal-admin/panel-principal-admin.component';
-import { AcuerdosComponent } from './acuerdos/acuerdos.component';
-import { NotificacionesComponent } from './notificaciones/notificaciones.component';
+//import { AcuerdosComponent } from './acuerdos/acuerdos.component';
+//import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 import { PropiedadesComponent } from './propiedades/propiedades.component';
-import { UsuariosComponent } from './usuarios/usuarios.component';
+//import { UsuariosComponent } from './usuarios/usuarios.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PanelPrincipalUserComponent } from './panel-principal-user/panel-principal-user.component';
 import { PanelPrincipalTesoreroComponent } from './panel-principal-tesorero/panel-principal-tesorero.component';
@@ -58,12 +58,31 @@ import { ConsultarAcuerdosComponent } from './consultar-acuerdos/consultar-acuer
 import { InquilinosComponent } from './inquilinos/inquilinos.component';
 import { ConsultarDeudasComponent } from './consultar-deudas/consultar-deudas.component';
 import { DeudasComponent } from './deudas/deudas.component';
-import { TesoreroComponent } from './tesorero/tesorero.component';
+//import { TesoreroComponent } from './tesorero/tesorero.component';
 import { NoEncontradoDirective } from './no-encontrado/no-encontrado.directive';
+import { PaypalComponent } from './paypal/paypal.component';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { IngresosComponent } from './ingresos/ingresos.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { NgIconsModule } from '@ng-icons/core';
+import { featherAirplay } from '@ng-icons/feather-icons';
+import {MatBadgeModule} from '@angular/material/badge';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component'; // Asegúrate de importar correctamente
+import {CdkAccordionModule} from '@angular/cdk/accordion';
+import { GruposComponent } from './grupos/grupos.component';
+import { NotificationService } from './notificaciones-service/notificaciones.service';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete'; // Importa MatAutocompleteModule
+import { MatInputModule } from '@angular/material/input'; // Importa MatInputModule
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { EditarCuentaComponent } from './editar-cuenta/editar-cuenta.component';
+//import { HomeUsuariosComponent } from './grupos/home-usuarios/home-usuarios.component';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -73,10 +92,10 @@ import { IngresosComponent } from './ingresos/ingresos.component';
     PruebaComponent,
     HomeComponent,
     PanelPrincipalAdminComponent,
-    AcuerdosComponent,
-    NotificacionesComponent,
+    //AcuerdosComponent,
+    //NotificacionesComponent,
     PropiedadesComponent,
-    UsuariosComponent,
+    //UsuariosComponent,
     NotFoundComponent,
     PanelPrincipalUserComponent,
     PanelPrincipalTesoreroComponent,
@@ -111,9 +130,15 @@ import { IngresosComponent } from './ingresos/ingresos.component';
     InquilinosComponent,
     ConsultarDeudasComponent,
     DeudasComponent,
-    TesoreroComponent,
+    //TesoreroComponent,
     NoEncontradoDirective,
-    IngresosComponent
+    PaypalComponent,
+    IngresosComponent,
+    LoadingSpinnerComponent,
+    GruposComponent,
+    EditarCuentaComponent,
+   // HomeUsuariosComponent
+
     
   ],
   imports: [
@@ -133,10 +158,16 @@ import { IngresosComponent } from './ingresos/ingresos.component';
     FormsModule,
     CommonModule,
     RouterOutlet,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    MatPaginatorModule,
+    MatBadgeModule,
+    CdkAccordionModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule
 
   ],
-  providers: [],
+  providers: [NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

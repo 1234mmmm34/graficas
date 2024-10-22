@@ -1,4 +1,9 @@
-
+export interface entradas {
+    id_entrada: any,
+    fecha: any,
+    nombre: any
+    };
+    
 export interface deudas {
     id_deudas: any,
     id_fraccionamiento: any,
@@ -59,5 +64,18 @@ export interface deudores {
             variables: any,
             novariables: any,
             por_variables: any,
-            por_novariables: any
+            por_novariables: any,
+            proyeccion_ingresos: any;
+            mes: any;
+            egresos: any;
             };
+
+            export interface historial {
+                id_deuda: any,
+                nombre_persona: any,
+                tipo_deuda: any,
+                nombre_deuda: any,
+                monto: any,
+                recargo: any,
+                estado: any
+                };

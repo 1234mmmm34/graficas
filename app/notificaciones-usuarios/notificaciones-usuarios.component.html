@@ -2,7 +2,7 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
-<body>
+<body> 
 
     <div>
         <h2 class="titulo">Notificaciones</h2>
@@ -14,11 +14,9 @@
 
 
     <div class="contenedor1">
-        <div id="buscar">
+        <div id="buscar"> 
 
             <input type="text" name="filtrar" placeholder="buscar" [(ngModel)]="filtroNotificaciones">
-
-           <!--
 
             <div class="select-container">
                 <select id="tipoNotificacion" (change)="onChange($event)">
@@ -31,16 +29,13 @@
 
             </div>
 
-           -->
-
-
         </div>
 
         <div class="contenedor2">
 
             <table class="table" width="100%">
                 <thead>
-                    <tr>
+                    <tr> 
 
                         <th scope="col" width="300px" style=" font: 1em sans-serif;">Asunto</th>
                         <th scope="col">Detalles</th>
@@ -72,9 +67,10 @@
 
         <div class="pages">
 
+            <p>Filas por página</p> <input type="number" id="pageNumber" class="page">
 
             <button class="boton-verde" (click)="paginador_atras()">&lt;</button>
-            <p style="padding-top: 20px; "> {{cont}} </p>
+            <p style="padding-top: 20px; "> {{cont}} - 5 </p>
             <button class="boton-verde" (click)="paginador_adelante()">&gt;</button>
 
         </div>

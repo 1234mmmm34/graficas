@@ -25,11 +25,6 @@ export class DeudaService {
     return this.http.get<Deudores[]>(url);
   }
 
-  // pagarDeudaOrdinaria(idDeudor: number, idDeuda: number, idFraccionamiento: number, proximoPago: string): Observable<boolean> {
-  //   const url = `${this.apiUrl}/Pagar_DeudaOrdinaria?id_deudor=${idDeudor}&id_deuda=${idDeuda}&id_fraccionamiento=${idFraccionamiento}&proximo_pago=${proximoPago}`;
-
-  //   return this.http.post<boolean>(url, {});
-  // }
 
   pagarDeudaOrdinaria(idDeudor: number, idDeuda: number, idFraccionamiento: number, proximoPago: string, file: File): Observable<boolean> {
     const url = `${this.apiUrl}/Pagar_DeudaOrdinaria`;
@@ -45,7 +40,7 @@ export class DeudaService {
     return this.http.post<boolean>(url, formData);
   }
 
-  pagarDeudaExtraordinaria(idDeudor: number, idDeuda: number, idFraccionamiento: number, proximoPago: string, file: File): Observable<boolean> {
+  pagarDeudaExtraordinaria(idDeudor: number, idDeuda: number, idFraccionamiento: number, proximoPago: string, file: File, tipo_pago: string, monto: any): Observable<boolean> {
     const url = `${this.apiUrl}/Pagar_DeudaExtraordinaria`;
 
     // Crear un objeto FormData para enviar datos y el archivo
@@ -55,16 +50,12 @@ export class DeudaService {
     formData.append('id_fraccionamiento', idFraccionamiento.toString());
     formData.append('proximo_pago', proximoPago);
     formData.append('file', file);
+    formData.append('tipo_pago', tipo_pago.toString());
+    formData.append('monto', monto);
 
     return this.http.post<boolean>(url, formData);
   }
 
-
-  // pagarDeudaExtraordinaria(idDeudor: number, idDeuda: number, idFraccionamiento: number, proximoPago: string): Observable<boolean> {
-  //   const url = `${this.apiUrl}/Pagar_DeudaExtraordinaria?id_deudor=${idDeudor}&id_deuda=${idDeuda}&id_fraccionamiento=${idFraccionamiento}&proximo_pago=${proximoPago}`;
-
-  //   return this.http.post<boolean>(url, {});
-  // }
 
 
 }

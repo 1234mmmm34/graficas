@@ -9,6 +9,9 @@ import { DatePipe } from '@angular/common'
 import { Personas } from '../ingresos-extraordinarios/personas.model';
 import { PersonasService } from '../ingresos-extraordinarios/personas.service';
 import Swal from 'sweetalert2';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { LoadingService } from '../loading-spinner/loading-spinner.service';
+
 @Component({
   selector: 'app-deudas',
   templateUrl: './deudas.component.html',
@@ -20,6 +23,7 @@ export class DeudasComponent {
   UserGroup: FormGroup;
   UserGroup2: FormGroup;
   deudas: deudas[] = [];
+  deudas1: deudas[] = [];
   deuda =new deuda();
   id_deudas: any;
   destinatario:string='';
@@ -28,11 +32,13 @@ export class DeudasComponent {
   formulario: any;
   personas : Personas[]=[];
 
+  mostrarGrid: boolean = false;
+  indice: number = 0;
+  verdaderoRango: number = 6;
+  cont: number = 1;
 
-
-  constructor(private renderer: Renderer2 , private el: ElementRef, private http: HttpClient, private dataService: DataService, private fb: FormBuilder,private personaService:PersonasService){
-
-
+  constructor(private renderer: Renderer2 , private el: ElementRef, private http: HttpClient, private dataService: DataService, private fb: FormBuilder,private personaService:PersonasService, private loadingService: LoadingService){
+  
     
     this.UserGroup = this.fb.group({
          fraccionamiento: ['', Validators.required],
@@ -75,6 +81,36 @@ export class DeudasComponent {
     
     }
 
+    pageChanged(event: any) {
+      // Determinar la acción del paginator
+      if (event.previousPageIndex < event.pageIndex) {
+        // Se avanzó a la siguiente página
+        this.paginador_adelante();
+      } else if (event.previousPageIndex > event.pageIndex) {
+        // Se retrocedió a la página anterior
+        this.paginador_atras();
+      }
+    }
+
+    paginador_atras() {
+
+      if (this.indice - this.verdaderoRango >= 0) {
+        
+        this.deudas1 = this.deudas.slice(this.indice - this.verdaderoRango, this.indice);
+        this.indice = this.indice - this.verdaderoRango;
+        this.cont--;
+      }
+    }
+  
+    paginador_adelante() {
+      if (this.deudas.length - (this.indice + this.verdaderoRango) > 0) {
+        this.indice = this.indice + this.verdaderoRango;
+        this.deudas1 = this.deudas.slice(this.indice, this.indice + this.verdaderoRango);
+        this.cont++;
+       // this.consultarNotificacion
+      } 
+      
+    }
     
     toggleCollapsible(event: Event): void {
       const element = event.currentTarget as HTMLElement;
@@ -128,9 +164,15 @@ export class DeudasComponent {
 
 
     fetchDataDeudas(id_tesorero: any) {
+      this.loadingService.show();
       this.dataService.fetchDataDeudas(id_tesorero).subscribe((deudas: deudas[]) => {
         console.log(deudas);
         this.deudas = deudas;
+        this.deudas1 = this.deudas.slice(this.indice, this.indice + this.verdaderoRango);
+        this.mostrarGrid = true;
+        this.loadingService.hide();
+
+
       });
     }
 
@@ -138,6 +180,7 @@ export class DeudasComponent {
       this.dataService.fetchDataDeudasExtra(id_tesorero).subscribe((deudas: deudas[]) => {
         console.log(deudas);
         this.deudas = deudas;
+        this.deudas1 = this.deudas.slice(this.indice, this.indice + this.verdaderoRango);
       });
     }
 
@@ -365,3 +408,4 @@ actualizar_deudaExtra(
 function toggleCollapsible(event: Event | undefined, Event: { new(type: string, eventInitDict?: EventInit | undefined): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }) {
   throw new Error('Function not implemented.');
 }
+

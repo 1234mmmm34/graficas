@@ -10,7 +10,7 @@ import { Usuario } from './usuario.model';
 import Swal from 'sweetalert2'
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient, HttpParams} from '@angular/common/http';
-import { Personas } from '../cuenta/personas.model';
+import { Personas } from '../modelos/personas';
 import { NgModule } from '@angular/core';
 
 
@@ -73,7 +73,7 @@ export class InvitacionComponent {
               this.invitacion = response;
               console.log(this.invitacion);
               this.UserGroup.patchValue({correo: this.invitacion[0].correo_electronico});
-              this.UserGroup.patchValue({id_fraccionamiento: 'ID del fraccionamiento: '+this.invitacion[0].id_fraccionamiento});
+              this.UserGroup.patchValue({id_fraccionamiento: this.invitacion[0].id_fraccionamiento});
               this.UserGroup.patchValue({id_lote: 'ID del lote: '+this.invitacion[0].lote});
               this.UserGroup.patchValue({tipo_usuario:this.invitacion[0].tipo_usuario});
               
@@ -114,7 +114,7 @@ export class InvitacionComponent {
  
 
 
-  agregar_usuario(usuarios: {
+  agregar_usuario(usuario: {
 
     id_usuario: number | undefined;
     nombre: string | undefined;
@@ -130,26 +130,32 @@ export class InvitacionComponent {
     confirmarContrasena: string | undefined;
   
   }) {
+
+    console.log("params: ",usuario)
+
+   
   
-    if (usuarios.contrasenia == usuarios.confirmarContrasena) {
+    if (usuario.contrasenia == usuario.confirmarContrasena) {
   
       const params = {
-        nombre: usuarios.nombre,
-        apellido_pat: usuarios.apellido_pat,
-        apellido_mat: usuarios.apellido_mat,
+        nombre: usuario.nombre,
+        apellido_pat: usuario.apellido_pat,
+        apellido_mat: usuario.apellido_mat,
         tipo_usuario: "usuario",
-        telefono: usuarios.telefono,
-        fecha_nacimiento: usuarios.fecha_nacimiento,
-        correo: usuarios.correo,
-        contrasenia: usuarios.contrasenia,
-        id_fraccionamiento: this.dataService.obtener_usuario(1),
-        id_administrador: this.dataService.obtener_usuario(1),
+        telefono: usuario.telefono,
+        fecha_nacimiento: usuario.fecha_nacimiento,
+        correo: usuario.correo,
+        contrasenia: usuario.contrasenia,
+        id_fraccionamiento: this.invitacion[0].id_fraccionamiento,
+        id_administrador: this.invitacion[0].id_fraccionamiento,
         id_lote: 1,
         hikvision: "permitido"
   
         //  Intercomunicador: 123,
         //  Codigo_acceso: "123"
       };
+
+      console.log("params: ",usuario)
   
       let direccion = "https://localhost:44397/api/Usuarios/Agregar_Usuario";
   

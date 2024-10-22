@@ -79,6 +79,7 @@ export class InicioSesionComponent {
        
     $(function () {
 
+
       $('#login-form-link').click(function (e) {
         $("#login-form").delay(100).fadeIn(100);
         $("#register-form").fadeOut(100);
@@ -130,6 +131,29 @@ export class InicioSesionComponent {
         }
   
         localStorage.setItem("data", JSON.stringify(sesions[0]));
+      } else {
+        Swal.fire({
+          title: 'Error en inicio de sesion',
+          text: 'Correo o contraseña incorrectos',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
+
+
+
+
+    
+    this.data.consultarDeudasPorCobrar(0).subscribe((graficas) => {
+      if (graficas.length > 0) { 
+        console.log(graficas[0].novariables);
+        console.log(graficas[0]);
+    
+
+        localStorage.setItem("graficas", JSON.stringify(graficas[0]));
+       
+
       } else {
         Swal.fire({
           title: 'Error en inicio de sesion',

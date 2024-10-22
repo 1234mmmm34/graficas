@@ -81,6 +81,7 @@ export class ConsultarDeudasComponent {
       })
 
   }
+  
   deleteExtra(id_deudas: any){
     return this.http.delete("http://159.54.134.179/api/Deudas/Eliminar_Deuda?id_deudas="+id_deudas).subscribe(
       () => {

@@ -5,6 +5,7 @@ import { Proveedor } from '../proveedores/proveedor.model';
 import { ProveedoresService } from '../proveedores/proveedores.service';
 import { DataService } from '../data.service';
 import Swal from 'sweetalert2'
+import { LoadingService } from '../loading-spinner/loading-spinner.service';
 
 @Component({
   selector: 'app-egresos',
@@ -16,17 +17,18 @@ export class EgresosComponent {
   proveedores: Proveedor[]=[];
   egresos: Egresos[]=[];
   idEgreso: number=0;
+  mostrarGrid: boolean = false;
   //
   egresoModel: Egresos = {
     id_egreso: 0, 
     concepto: '',
     descripcion: '',
     proveedor: '',
-    monto: 0,
+    monto: '',
     fecha: ''
   };
   //
-  constructor(private egresoService:EgresosService, private proveedoresService:ProveedoresService, private dataService:DataService){ }
+  constructor(private egresoService:EgresosService, private proveedoresService:ProveedoresService, private dataService:DataService, private loadingService: LoadingService){ }
 
   ngOnInit():void{
     this.id_fraccionamiento=this.dataService.obtener_usuario(3);
@@ -36,10 +38,16 @@ export class EgresosComponent {
   }
 
   consultarEgresos(idFraccionamiento: number) {
+
+    this.loadingService.show();
+    
     this.egresoService.consultarEgresos(idFraccionamiento).subscribe(
       (data: Egresos[]) => {
         console.log('Egresos consultados:', data);
         this.egresos=data;
+
+        this.mostrarGrid = true;
+        this.loadingService.hide();
       },
       (error) => {
         console.error('Error al consultar egresos:', error);
@@ -57,7 +65,7 @@ export class EgresosComponent {
   agregarEgreso() {
     const { concepto, descripcion, proveedor, monto,fecha } = this.egresoModel;
   
-    this.egresoService.agregarEgreso(this.id_fraccionamiento, concepto, descripcion, proveedor, monto, fecha).subscribe(
+    this.egresoService.agregarEgreso(this.dataService.obtener_usuario(3), concepto, descripcion, proveedor, monto, fecha).subscribe(
       (result: boolean) => {
         if (result) {
           console.log('Egreso agregado correctamente');
@@ -165,9 +173,13 @@ export class EgresosComponent {
 
   //metodo para cargar proveedores del fraccionamienti
   cargarProveedores(): void {
+
     this.proveedoresService.consultarProveedores(this.id_fraccionamiento).subscribe(
       (data: Proveedor[]) => {
         this.proveedores = data;
+  
+        
+
       },
       (error) => {
         console.error('Error al obtener proveedores:', error);

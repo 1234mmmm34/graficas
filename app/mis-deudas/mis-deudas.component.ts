@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-mis-deudas',
   templateUrl: './mis-deudas.component.html',
-  styleUrls: ['./mis-deudas.component.css']
+  styleUrls: ['../consulta.css']
 })
 export class MisDeudasComponent {
 
@@ -18,6 +18,10 @@ export class MisDeudasComponent {
   deudores: deudores[] = [];
   deudor =new deudor();
   filtroDeudores:'' | undefined;
+  filtroFecha:'' | undefined;
+  indice: number = 0;
+  cont: number = 1;
+  verdaderoRango: number = 6;
 
   Deudores_totales:Deudores[]=[];
   Deudores_totales2:Deudores[]=[];
@@ -35,15 +39,55 @@ export class MisDeudasComponent {
   //   });
   // }
 
+
+  pageChanged(event: any) {
+    // Determinar la acción del paginator
+    if (event.previousPageIndex < event.pageIndex) {
+      // Se avanzó a la siguiente página
+      this.paginador_adelante();
+    } else if (event.previousPageIndex > event.pageIndex) {
+      // Se retrocedió a la página anterior
+      this.paginador_atras();
+    }
+  }
+
+  paginador_atras() {
+
+    if (this.indice - this.verdaderoRango >= 0) {
+      this.Deudores_totales2 = this.Deudores_totales.slice(this.indice - this.verdaderoRango, this.indice);
+      this.indice = this.indice - this.verdaderoRango;
+      this.cont--;
+    }
+
+  }
+
+  paginador_adelante() {
+    if (this.Deudores_totales.length - (this.indice + this.verdaderoRango) > 0) {
+      this.indice = this.indice + this.verdaderoRango;
+      this.Deudores_totales2 = this.Deudores_totales.slice(this.indice, this.indice + this.verdaderoRango);
+      this.cont++;
+
+    }
+  }
+
+  onChange(event: any) {
+
+    const selectedValue = event.target.value;
+
+    //this.id_destinatario = selectedValue;
+    // console.log(this.id_destinatario);
+
+    this.ConsultarDeudores();
+  }
+
+
   ConsultarDeudores(){
     console.log("aaaaaaaa: " + this.dataService.obtener_usuario(4))
     this.personasService.consultarDeudoresUsuarios(this.dataService.obtener_usuario(1)).subscribe(
       (deudasUsuario: Deudores[]) => {
        this.Deudores_totales = deudasUsuario
         console.log('deudas', this.Deudores_totales);
-        if(this.Deudores_totales.length!=0){
-
-        }else{
+        if(this.Deudores_totales.length==0){
           Swal.fire({
             title: 'El usuario seleccionado no tiene deudas  vencidas',
             text: '',
@@ -51,7 +95,6 @@ export class MisDeudasComponent {
             confirmButtonText: 'Aceptar'
           });
         }
-       
       },
       (error) => {
         // Manejo de errores

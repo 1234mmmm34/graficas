@@ -27,11 +27,8 @@
           </select>
         </p>
 
-
         <p>
-          <input type="text" id="montoDeudaExtra" name="montoDeudaExtra" formControlName="montoDeudaExtra" value=""
-            placeholder="Agrega un monto para el ingreso" [(ngModel)]="monto">
-
+          <input type="text" #montoDeudaExtra id="montoDeudaExtra" name="montoDeudaExtra" formControlName="montoDeudaExtra" value="" placeholder="Agrega un monto para el ingreso" [(ngModel)]="monto">
         </p>
 
         <p>
@@ -55,7 +52,7 @@
         </p>
 <!--btn_imagen-->
         <p>
-          <button class="boton-verde" (click)="pagarDeudaExtraordinaria()">Pagar</button>
+          <button class="boton-verde" (click)="pagarDeudaExtraordinaria(montoDeudaExtra.value)">Pagar</button>
         </p>
       </form>
  

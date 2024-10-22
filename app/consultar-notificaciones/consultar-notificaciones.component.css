@@ -8,37 +8,71 @@ body {
 
 }
 
+mat-icon:hover {
+  color: #6c5bb8; /* Cambia 'blue' al color que desees */
+  cursor: pointer; /* Opcional: Cambia el cursor al cursor de puntero */
+}
+
 #buscar1{
   display: inline-block;
   width: 500px;
+  padding-top: 15px;
 }
  
 span{
-  margin-left: 20px;
+  margin-left: 3px;
+  
 }
 
 .asunto{
   padding-left: 20px; 
 }
 
-/* Estilo base para el combobox */
-select {
 
-  /* Redondear los bordes */
-  border-radius: 5px;
-  /* Eliminar los estilos nativos del navegador */
-  appearance: none;
-  /* Agregar un borde y rellenar */
-  border: 1px solid #ccc;
-  padding: 10px;
-  /* Añadir un fondo */
-  background-color: #fff;
-  /* Añadir margen para separar el combobox de otros elementos */
-  margin-left: 15px;
-  /* Establecer un ancho */
-  text-align: center;
-  width: 200px;
+
+input, select{
+  border:none;
+  border-bottom:1px solid #757575;
+  background-color: transparent;
+  margin-top: 3px;
+  width: 70%;
+  margin-left: 10%;
 }
+
+
+.nuevo{
+  background-color: rgb(62, 178, 62);
+  border-radius: 48%;
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  font-size: smaller;
+  color: #f5f1f1;
+
+}
+
+#nuevonot{
+  width: 100px;
+}
+
+.form-group > input{
+  border:none;
+  border-bottom:1px solid #757575;
+  border-radius: 0%;
+
+}
+
+.form-group > input, .form-group > textarea, .form-group > select{
+  margin:auto !important;
+  width: 120%;
+  text-align: center;
+  resize: none;
+
+}
+
+.form-group > button{
+  margin-left: 40%;
+}
+
 
 /* Estilo para el icono de desplegar */
 select::after {
@@ -62,6 +96,7 @@ select::after {
 
 }
 
+
 input {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -72,6 +107,7 @@ input {
   margin-left: 50px;
 
 }
+
 
 .contenedor2 {
   height: 600px;
@@ -84,8 +120,7 @@ input {
   display: flexbox;
 }
 
-
-
+ 
 
 .boton {
   background-color: #242434;
@@ -100,14 +135,20 @@ input {
   text-transform: uppercase;
   border-color: #242434;
   border-radius: 5px;
-
-  margin-right: 20%;
-  margin-left: 69%;
   padding-top: 10px;
+  border: none;
+
+
 
 
 
 }
+
+/*
+  margin-right: 20%;
+  margin-left: 69%;
+  padding-top: 10px;
+  */
 
 .boton:hover {
   color: #ffffff;
@@ -142,6 +183,10 @@ input {
 
   border-collapse: collapse;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#boton-buscar{
+  margin-left: 67%;
 }
 
 
@@ -213,11 +258,17 @@ table {
 
 .pages {
   display: flex;
-  justify-content: center;
-  position: absolute;
-  top: 85%;
-  left: 50%;
-}
+   justify-content: center;
+   position: absolute;
+   top: 80%;
+   
+   left: 40%;
+ }
+
+ mat-paginator{
+  background-color: transparent;
+ }
+
 
 
 #td-view{
@@ -231,6 +282,10 @@ td{
   white-space: nowrap; /* Evita que el texto se ajuste a múltiples líneas */
  
 
+}
+
+#tipoNotificacion{
+  text-align: center;
 }
 
 
@@ -316,17 +371,15 @@ input[type="checkbox"]:checked ~ .modal-background {
   width: 500px;
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 60px;
+  
   align-items: center;
   margin: auto;
 
 
 }
 
-.form-group > #asunto, .form-group > #mensaje{
-  margin-left: auto;
-  width: 100%;
-}
+
 
 .Formulario {
   position: absolute;
@@ -336,7 +389,9 @@ input[type="checkbox"]:checked ~ .modal-background {
 
 
 ng-template{
-  background-image: url("./no-en1.jpg");
+  background-image: url("./notfound.png");
+  background-color: #242434;
+  margin: auto;
 
 
   
@@ -344,10 +399,8 @@ ng-template{
 
 .div-noen {
 
- 
-
-
   display: flex;
+  margin-top: 180px;
   justify-content: center; /* Centra los elementos horizontalmente */
   align-items: center; /* Centra los elementos verticalmente */
   
@@ -355,8 +408,10 @@ ng-template{
 
 .noencontrado{
 
-
+width: 650px;
+height: 500px;
 left: 10%;
+
  
 }
 
@@ -475,5 +530,4 @@ thead{
   width: 30%;
 }
 }
-
 

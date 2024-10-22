@@ -169,12 +169,16 @@ table {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+mat-paginator{
+  background-color: transparent;
+}
+
 .pages {
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 85%;
-  left: 50%;
+  top: 68%;
+  left: 40%;
 }
 
 
@@ -302,23 +306,24 @@ ng-template{
   
 }
 */
-.div-noen {
-
- 
-
-
-  display: flex;
-  justify-content: center; /* Centra los elementos horizontalmente */
-  align-items: center; /* Centra los elementos verticalmente */
-  
-}
-
 .noencontrado{
 
-
-left: 10%;
+  width: 650px;
+  height: 500px;
  
-}
+  
+   
+  }
+
+
+  .div-noen {
+
+    display: flex;
+    margin-top: 90px;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    
+  }
 
 .textb{
   left: 200px;
@@ -579,7 +584,6 @@ width: 600px;
 
   
   
-
 
 
 

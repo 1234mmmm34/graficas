@@ -14,12 +14,30 @@ body {
 
 }
 
+.form-group > #asunto{
+  border:none;
+  border-bottom:1px solid #757575;
+  border-radius: 0%;
+  width: 270px !important;
+  
+
+}
+
+textarea{
+  margin:auto !important;
+  width: 100%;
+  text-align: center;
+  resize: none;
+
+}
+
+
 .asunto{
   padding-left: 20px; 
 }
 
 
-input {
+#buscar1, #buscar2 {
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 350px;
@@ -55,13 +73,20 @@ input {
   text-transform: uppercase;
   border-color: #242434;
   border-radius: 5px;
+  border: none;
 
-  margin-right: 20%;
-  margin-left: 69%;
+  padding-left: 10px;
+  padding-right: 10px;
+
   padding-top: 10px;
 
 
 
+}
+
+mat-icon:hover {
+  color: #6c5bb8; /* Cambia 'blue' al color que desees */
+  cursor: pointer; /* Opcional: Cambia el cursor al cursor de puntero */
 }
 
 .boton:hover {
@@ -100,16 +125,6 @@ input {
 }
 
 
-/*
-    input{
-      border:none;
-      text-align: center;
-      width: 200px;
-      border-bottom:1px solid #757575;
-
-    }
-
-*/
 
 .titulo {
   text-align: justify !important;
@@ -168,11 +183,16 @@ table {
 
 .pages {
   display: flex;
-  justify-content: center;
-  position: absolute;
-  top: 85%;
-  left: 50%;
-}
+   justify-content: center;
+   position: absolute;
+   top: 80%;
+   
+   left: 40%;
+ }
+
+ mat-paginator{
+  background-color: transparent;
+ }
 
 
 #td-view{
@@ -288,7 +308,7 @@ input[type="checkbox"]:checked ~ .modal-background {
 }
 
 ng-template{
-  background-image: url("./no-en1.jpg");
+  background-image: url("./notfound.png");
 
 
   
@@ -297,7 +317,7 @@ ng-template{
 .div-noen {
 
  
-
+  margin-top: 120px;
 
   display: flex;
   justify-content: center; /* Centra los elementos horizontalmente */
@@ -307,7 +327,8 @@ ng-template{
 
 .noencontrado{
 
-
+width: 650px;
+height: 500px;
 left: 10%;
  
 }

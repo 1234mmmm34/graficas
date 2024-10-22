@@ -1,8 +1,8 @@
 
 export interface controladores {
-    nombre: any;
     id_controlador: any;
     id_fraccionamiento: any;
+    nombre: any
     user: any;
     password: any;
     port: any; 
@@ -11,9 +11,9 @@ export interface controladores {
     };
     
     export class controlador {
-        nombre: any;
         id_controlador: any;
         id_fraccionamiento: any;
+        nombre: any;
         user: any;
         password: any;
         port: any;

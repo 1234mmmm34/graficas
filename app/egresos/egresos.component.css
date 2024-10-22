@@ -14,6 +14,53 @@ body {
 
 }
 
+p{
+  margin-bottom: 30px;
+}
+
+
+.noencontrado{
+
+  width: 650px;
+  height: 500px;
+ 
+  
+   
+  }
+
+
+  .div-noen {
+
+    display: flex;
+    margin-top: 90px;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    
+  }
+
+
+.boton {
+  background-color: #242434;
+  outline: none;
+  color: #ffffff;
+  font-size: 14px;
+  height: 40px;
+  font-weight: normal;
+  width: 100px;
+  text-align: center;
+   
+  text-transform: uppercase;
+  border-color: #242434;
+  border-radius: 5px;
+
+   
+  padding-top: 10px;
+  margin-left: 150%;
+  margin-right: 3%;
+
+
+
+}
 
 .asunto{
   padding-left: 20px; 
@@ -584,7 +631,6 @@ width: 600px;
 
   
   
-
 
 
 

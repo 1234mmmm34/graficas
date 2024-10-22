@@ -9,7 +9,7 @@ import { Deudores } from './deudores.model';
 import { deuda } from '../modelos/deudas';
 import { formatDate } from '@angular/common';
 import { Router } from "@angular/router";
-
+ 
 
 @Component({
   selector: 'app-ingresos-extraordinarios',
@@ -30,6 +30,7 @@ export class IngresosExtraordinariosComponent {
   periodicidad:number=0;
   id_deuda:number=0;
   id_deudor:number=0;
+  tipo_pago: string = "";
 
   montoExtra:number=0;
  
@@ -126,17 +127,18 @@ onChangeDeuda(event: any) {
   this.diasAtraso = Math.floor((fechaActual.getTime() - proximoPago.getTime()) / (1000 * 3600 * 24));
 
   // Verificar si los días de atraso son mayores que los días de gracia y agregar recargo
+
+  this.total = deudaSeleccionada.monto
+
   if (this.diasAtraso > deudaSeleccionada.dias_gracia) {
     // Agregar el recargo al monto de la deuda
     
-    this.total = deudaSeleccionada.monto + deudaSeleccionada.recargo ; // Agregar el valor de lote al recargo
+    this.total += deudaSeleccionada.recargo ; // Agregar el valor de lote al recargo
   
   }
  
 
 }
-
-
 onChangeOption(event:any){
   const selectedValue = event.target.value;
 
@@ -151,14 +153,26 @@ onChangeOption(event:any){
 
 //Parte del pago de las deudas
 
-pagarDeudaExtraordinaria() {
+pagarDeudaExtraordinaria(montoDeudaExtra: any) {
   const idDeudor = this.id_deudor // Reemplaza con el ID del deudor correspondiente
   const idDeuda = this.id_deuda; // Reemplaza con el ID de la deuda correspondiente
   const idFraccionamiento = this.dataService.obtener_usuario(3); // Reemplaza con el ID del fraccionamiento correspondiente
   const proximoPago = this.fechaProximoPago; // Reemplaza con la fecha deseada en el formato correcto
+  
+  const monto = this.monto
+
+  console.log("monto: ", montoDeudaExtra, "total: ", monto)
+
+  if(montoDeudaExtra<monto){
+    this.tipo_pago = "abono";
+   // montoDeudaExtra = monto - montoDeudaExtra;
+  }
+  else{
+    this.tipo_pago = "liquidacion";
+  }
 
   if(this.archivoSeleccionado){
-    this.deudaService.pagarDeudaExtraordinaria(idDeudor, idDeuda, idFraccionamiento, proximoPago,this.archivoSeleccionado).subscribe(
+    this.deudaService.pagarDeudaExtraordinaria(idDeudor, idDeuda, idFraccionamiento, proximoPago,this.archivoSeleccionado, this.tipo_pago, montoDeudaExtra).subscribe(
       (respuesta) => {
         if (respuesta) {
           Swal.fire({

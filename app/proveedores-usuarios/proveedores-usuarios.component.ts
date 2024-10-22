@@ -6,7 +6,7 @@ import { DataService } from '../data.service';
 @Component({
   selector: 'app-proveedores-usuarios',
   templateUrl: './proveedores-usuarios.component.html',
-  styleUrls: ['./proveedores-usuarios.component.css']
+  styleUrls: ['../consulta.css']
 })
 export class ProveedoresUsuariosComponent {
   idFraccionamiento: number =0;

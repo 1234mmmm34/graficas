@@ -5,37 +5,15 @@
 
 <body>
 
+    <app-loading-spinner></app-loading-spinner>
+
     <div class="top">
         <h2 class="titulo">Gestión de deudas</h2>
         <p id="descripcion">Agrega deudas ordinarias y extraordinarias, facilita los pagos a través de nuestra
             plataforma. </p>
     </div>
 
-
-
-    <div class="sidenav">
-        <h2 id="deuda-titulo">Deudas {{formulario}}</h2>
-      
-        <!--
-         <div class="collapsible" (click)="toggleCollapsible($event)">
-            caca
-          </div>
-          <div class="content">
-            pis
-          </div>
-
-
-        -->
-
-          
-
-    </div>
-
-
-
-
-
-    <div class="contenedor">
+    <div class="contenedor" *ngIf="mostrarGrid">
         <div id="buscar">
 
             <select class="select-deuda" [(ngModel)]="tipo_formulario" (change)="onChangeSelection($event)">
@@ -47,10 +25,10 @@
             <label for="modal" class="boton">Agregar</label>
 
         </div>
-
     </div>
 
-    <div id="contenedor2">
+
+    <div id="contenedor2" *ngIf="this.deudas1.length>0; else noencontrado">
         <table id="example" class="table" cellspacing="0">
             <thead>
                 <tr>
@@ -68,16 +46,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr mat-row matRowDef="columns: displayedcolumns;" *ngFor="let deuda of deudas; let j=index"
+                <tr mat-row matRowDef="columns: displayedcolumns;" *ngFor="let deuda of deudas1; let j=index"
                     (click)="onRowClicked(deuda)">
                     <th scope="row">{{deuda.id_deudas}}</th>
-                    <td>{{deuda.monto}}</td>
+                    <td>${{deuda.monto}} MXN</td>
                     <td>{{deuda.nombre}}</td>
                     <td>{{deuda.descripcion}}</td>
-                    <td class="fecha">{{deuda.dias_gracia}}</td>
-                    <td>{{deuda.periodicidad}}</td>
-                    <td>{{deuda.recargo}}</td>
-                    <td>{{deuda.proximo_pago1}}</td>
+                    <td class="fecha">{{deuda.dias_gracia > 0 ? deuda.dias_gracia: '-' }}</td>
+                    <td>{{deuda.periodicidad > 0 ? deuda.periodicidad: '-' }}</td>
+
+                    <td>{{ deuda.recargo > 0 ? "$" + deuda.recargo + " MXN" : '-' }}</td>
+                    <td>{{ deuda.proximo_pago1 ? deuda.proximo_pago1 : 'N/A' }}</td>
                     <td>
 
                         <button type="button" id="view-button">
@@ -89,11 +68,22 @@
             </tbody>
         </table>
 
+        <div class="pages">
+            <mat-paginator [length]="deudas.length" [pageSize]="verdaderoRango" [pageSizeOptions]="[5, 10, 25, 100]"
+                aria-label="Select page" (page)="pageChanged($event)">
+            </mat-paginator>
+        </div>
+
     </div>
 
 
+    <ng-template #noencontrado>
+        <div class="div-noen">
+            <img class="noencontrado" src="./notfound.png" alt="hola">
 
+        </div>
 
+    </ng-template>
 
 
 

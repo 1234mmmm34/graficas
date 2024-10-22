@@ -16,7 +16,7 @@ body {
 .sidenav{
   width: 400px;
   background-color: #e2e0e4;
-  height: 87.5%;
+  height: 100%;
   box-shadow: 0px 0px 10px 0px #a7a4a4 inset; /* Sombra */
   padding-left: 30px;
   display: flex;
@@ -24,19 +24,20 @@ body {
 
 }
 .contenedor {
-  
+
   width: 50%;
 
-  height: 70%;
+  height: 90%;
   padding: 20px;
   margin-top: 100px;
   position: absolute;
   top: 20px;
-  left: 25%;
+  left: 15%;
 
 
 
 }
+
 .top{
   
 
@@ -66,7 +67,7 @@ input {
   width: 50%;
 
   overflow: hidden;
-  margin-left: 20%;
+  margin-left: 15%;
   padding-top: 200px;
 
   display: flexbox;
@@ -148,7 +149,7 @@ input {
   background-color: #ffffff;
 
   width: 140%;
-  height: 10%;
+  height: 8%;
 
   border-collapse: collapse;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -227,7 +228,7 @@ table {
   width: 70%;
   font: 1em sans-serif;
   margin: auto;
-  left: 26%;
+  left: 16%;
 
   border-collapse: collapse;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -238,10 +239,13 @@ table {
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 75%;
+  top: 80%;
   left: 40%;
 }
 
+mat-paginator{
+  background-color: transparent;
+}
 #pageNumber {
   width: 60px;
 }
@@ -250,6 +254,26 @@ table {
   text-align: center;
 }
 
+
+
+.noencontrado{
+
+  width: 650px;
+  height: 500px;
+ 
+  
+   
+  }
+
+
+  .div-noen {
+
+    display: flex;
+    margin-top: 90px;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    
+  }
 
 
 /*    MODAL   */

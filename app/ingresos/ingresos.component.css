@@ -6,6 +6,18 @@ body {
     background-position: center center;
   
   }
+
+  .imagen-cont{
+    border-color: #000000;
+    border-width: 3px 3px 3px 3px;
+    border-style: solid;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 500px;
+    top: 100px;
+
+  }
   
   #deuda-titulo{
     margin-left: 60px;
@@ -32,7 +44,7 @@ body {
     margin-top: 100px;
     position: absolute;
     top: 20px;
-    left: 25%;
+    left: 15%;
   
   
   
@@ -67,7 +79,7 @@ body {
     width: 50%;
   
     overflow: hidden;
-    margin-left: 20%;
+    /*margin-left: 15%;*/
     padding-top: 200px;
   
     display: flexbox;
@@ -219,7 +231,7 @@ body {
   
   
   
-  
+   
   
   table {
     background-color: #ffffff;
@@ -228,21 +240,87 @@ body {
     width: 70%;
     font: 1em sans-serif;
     margin: auto;
-    left: 26%;
+    left: 16%;
   
     border-collapse: collapse;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
+  .boton-verde,
+.boton-amarillo,
+.boton-rojo,
+.boton-azul {
+  padding: 10px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+
+
+}
+
+
+.help-button {
+  background-color: #8d9093;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  position: absolute;
+  left: 440px;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.help-message {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+}
+
+.noencontrado{
+
+  width: 650px;
+  height: 500px;
+  margin-left: 50%;
   
-  .pages {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    top: 75%;
-    left: 40%;
+   
   }
-  
+
+
+  .div-noen {
+
+    display: flex;
+    margin-top: 90px;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    
+  }
+
+.pages {
+  display: flex;
+   justify-content: center;
+   position: absolute;
+   top: 80%;
+   
+   left: 40%;
+ }
+
+ mat-paginator{
+  background-color: transparent;
+ }
+   
   #pageNumber {
     width: 60px;
   }
@@ -268,7 +346,7 @@ body {
   
   
   .modal-background {
-      width: 100%;
+      width: 140%;
       height: 100%;
       background-color: rgba(0,0,0,0.5);
       position: fixed;
@@ -285,7 +363,7 @@ body {
       bottom: 0;
       margin: auto;
       display: none;	
-      width: 500px;
+      width: 900px;
       height: 550px;
       background-color: #fff;
       box-sizing: border-box;

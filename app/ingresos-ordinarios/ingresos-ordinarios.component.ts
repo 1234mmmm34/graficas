@@ -10,7 +10,7 @@ import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { deuda } from '../modelos/deudas';
 import { ComprobanteService } from './comprobante.service';
-
+ 
 @Component({
   selector: 'app-ingresos-ordinarios',
   templateUrl: './ingresos-ordinarios.component.html',

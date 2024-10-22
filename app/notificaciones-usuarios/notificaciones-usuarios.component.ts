@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NotificacionesService } from '../notificaciones/notificaciones.service';
-import { Notificaciones } from '../notificaciones/notificaciones.model';
+import { NotificacionesService } from '../consultar-notificaciones/notificaciones.service';
+import { Notificaciones } from '../modelos/notificaciones';
 import { DataService } from '../data.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { DataService } from '../data.service';
   styleUrls: ['./notificaciones-usuarios.component.css']
 })
 export class NotificacionesUsuariosComponent {
-  notificaciones: Notificaciones[] = [];
-  tipoSeleccionado: string = 'General';
+  notificaciones: Notificaciones[] = []; 
+  tipoSeleccionado: string = 'General'; 
   idFraccionamiento: number = this.dataService.obtener_usuario(3);
   idUsuario: number = this.dataService.obtener_usuario(1);
   indice: number = 0;
@@ -19,7 +19,7 @@ export class NotificacionesUsuariosComponent {
   notificaciones1: Notificaciones[] = [];
   filtroNotificaciones: "" | undefined;
   id_destinatario: number = 0;
-
+  
   constructor(private notificacionesService: NotificacionesService,private dataService:DataService) {}
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class NotificacionesUsuariosComponent {
     this.consultarNotificacion(this.idFraccionamiento, this.indice, this.verdaderoRango, this.idUsuario);
   }
 
-
+ 
 
   paginador_atras() {
 
@@ -39,36 +39,33 @@ export class NotificacionesUsuariosComponent {
   }
 
   paginador_adelante() {
-    console.log("notificaciones: ", this.notificaciones);
     if (this.notificaciones.length - (this.indice + this.verdaderoRango) > 0) {
       this.indice = this.indice + this.verdaderoRango;
       this.notificaciones1 = this.notificaciones.slice(this.indice, this.indice + this.verdaderoRango);
       this.cont++;
      // this.consultarNotificacion
-    }
-
+    } 
+    
   }
 
-  onChange(event: any){
+  onChange(event: any){ 
 
       const selectedValue = event.target.value;
-
+    
       this.id_destinatario=selectedValue;
      // console.log(this.id_destinatario);
 
      this.consultarNotificacion(this.dataService.obtener_usuario(1), 0, 100, this.id_destinatario);
   }
-
+  
 
   consultarNotificacion(idFraccionamiento: any, indice: number, verdaderoRango: number, id_destinatario: number) {
-    this.notificacionesService.consultarNotificacion(idFraccionamiento, 0, 100, 0).subscribe((notificaciones: Notificaciones[]) => {
-       //console.log("notificaciones: ", valor);
+    this.notificacionesService.consultarNotificacion(idFraccionamiento, 0, 100, id_destinatario).subscribe((notificaciones: Notificaciones[]) => {
+      //  console.log("notificaciones: ", valor);
         this.notificaciones = notificaciones;
         this.indice = 0;
         this.verdaderoRango = 6;
         this.notificaciones1 = this.notificaciones.slice(this.indice, this.indice + this.verdaderoRango);
-
-        console.log("notificaciones: ", this.notificaciones);
 
       });
   }

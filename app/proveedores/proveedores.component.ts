@@ -3,6 +3,7 @@ import { ProveedoresService } from './proveedores.service';
 import { Proveedor } from './proveedor.model';
 import { DataService } from '../data.service';
 import Swal from 'sweetalert2'
+import { LoadingService } from '../loading-spinner/loading-spinner.service';
 @Component({
   selector: 'app-proveedores',
   templateUrl: './proveedores.component.html', 
@@ -13,8 +14,9 @@ export class ProveedoresComponent {
   respuestaProveedores: string | null = null;
   proveedores: Proveedor[] = [];
   id_proveedor:number=0;
+  mostrarGrid: boolean = false;
   
-  constructor(private ProveedoresService: ProveedoresService, private dataservice:DataService) {}
+  constructor(private ProveedoresService: ProveedoresService, private dataservice:DataService, private loadingService: LoadingService) {}
 
   ngOnInit(): void {
     this.proveedorModel.idFraccionamiento=this.dataservice.obtener_usuario(3);
@@ -50,9 +52,14 @@ export class ProveedoresComponent {
 
 
   cargarProveedores(idFraccionamiento: number): void {
-    this.ProveedoresService.consultarProveedores(idFraccionamiento).subscribe(
+    this.loadingService.show();
+    this.ProveedoresService.consultarProveedores(this.dataservice.obtener_usuario(3)).subscribe(
       (data: Proveedor[]) => {
         this.proveedores = data;
+        this.mostrarGrid = true;
+        this.loadingService.hide();
+
+
       },
       (error) => {
         console.error('Error al obtener proveedores:', error);
@@ -163,7 +170,7 @@ export class ProveedoresComponent {
   cargarDatosProveedor(proveedorSeleccionado: Proveedor) {
    
     this.proveedorModel = {
-      idFraccionamiento: String(proveedorSeleccionado.id_fraccionamiento),
+      idFraccionamiento: String(this.dataservice.obtener_usuario(3)),
       nombre: proveedorSeleccionado.nombre,
       apellido_Paterno: proveedorSeleccionado.apellido_paterno,
       apellido_Materno: proveedorSeleccionado.apellido_materno,
